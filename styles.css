@@ -1,0 +1,24 @@
+/*styles.css*/
+
+*{
+    font-family: "Rajdhani", serif;
+}
+
+.rajdhani-regular {
+    font-family: "Rajdhani", serif;
+    font-weight: 400;
+    font-style: normal;
+  }
+  
+  .rajdhani-medium {
+    font-family: "Rajdhani", serif;
+    font-weight: 500;
+    font-style: normal;
+  }
+  
+  .rajdhani-bold {
+    font-family: "Rajdhani", serif;
+    font-weight: 700;
+    font-style: normal;
+  }
+  
