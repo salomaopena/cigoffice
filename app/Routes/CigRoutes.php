@@ -9,3 +9,4 @@ $routes = Services::routes();
 
 // Defining routes here
 $routes->get('/', 'Auth::index');
+$routes->get('/teste', 'Auth::teste');
