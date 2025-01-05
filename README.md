@@ -23,10 +23,46 @@ CIGBurguer Office Application is a web-based application designed to manage and 
    composer install
 6. Start the server:
    php spark serve
+7. Open your web browser and navigate to `http://localhost/cigoffice/public/` to access the CIGBurguer Office Application.
+
+## Database Structure
+
+The CIGBurguer Office Application uses a MySQL database schema provided in the `database/cigburguer_office_app.sql` file. You can create the database and import the schema using your preferred MySQL management tool.
+
+## Permissions for database administrator
+
+To grant database administrator permissions, you can use the following SQL statement:
+> - Database: cigburguer_office_app;
+> - User: cigburguer_office_app_admin;
+> - Password: GsCl23!G8/9)Y3UK
+
+Grant the following permissions:
+
+## User Roles and Permissions
+
+The CIGBurguer Office Application uses a role-based access control (RBAC) system to manage user permissions. The following user roles are available:
+
+- Admin: Can access all features and manage staff members, orders, inventory, and reports.
+- Manager: Can access all features except for managing staff members and inventory.
+- Kitchen: Can access order management features and view inventory.
+- Waiter: Can access order management features and view inventory.
+
+
+## Security Considerations
+
+The CIGBurguer Office Application is designed with security in mind. Here are some considerations:
+
+- Use secure HTTPS connections for all communication between the web browser and the server.
+- Implement password hashing and salting for user passwords.
+
 
 ## Server Requirements
 
-PHP version 8.1 or higher is required, with the following extensions installed:
+1. Apache or Nginx server with PHP 8.1 or higher.
+2. MySQL or MariaDB database server.
+3. Composer installed globally.
+
+For PHP version 8.1 or higher is required, with the following extensions installed:
 
 - [intl](http://php.net/manual/en/intl.requirements.php)
 - [mbstring](http://php.net/manual/en/mbstring.installation.php)
