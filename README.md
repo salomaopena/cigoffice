@@ -77,3 +77,48 @@ Additionally, make sure that the following extensions are enabled in your PHP:
 > - json (enabled by default - don't turn it off).
 > - [mysqlnd](http://php.net/manual/en/mysqlnd.install.php) if you plan to use MySQL
 > - [libcurl](http://php.net/manual/en/curl.requirements.php) if you plan to use the HTTP\CURLRequest library.
+
+## Frameworks and libraries
+
+The CIGBurguer Office Application uses the following frameworks and libraries:
+
+- [CodeIgniter 4](https://codeigniter.com/) - The PHP framework used for building the web application.
+- [AdminLTE 3](https://adminlte.io/) - A free Bootstrap admin template with a clean and modern design.
+- [PHPMailer](https://github.com/PHPMailer/PHPMailer) - A popular email sending library for PHP.
+- [PHP-DI](https://php-di.org/) - A dependency injection container for PHP.
+- [PHP-CS-Fixer](https://github.com/FriendsOfPHP/PHP-CS-Fixer) - A tool to fix PHP code style issues.
+- [PHP-XSS-Sanitizer](https://github.com/paragonie/php-xss-sanitizer) - A PHP library for sanitizing user input against XSS
+- [PHP-JWT](https://github.com/firebase/php-jwt) - A library for generating and validating JSON Web Tokens.
+- [PHP-CSV](https://github.com/php-fig/php-fig-standards/tree/master/proposed/csv-standard) - A PHP library for
+reading and writing CSV files.
+- [PHP-Graphviz](https://github.com/php-graphviz/php-graphviz) - A PHP library for generating graphs using Graphviz.
+- [Bootstrap-5.3.3]
+- [Google-fonte]
+
+## Contributing
+
+To contribute to the CIGBurguer Office Application, follow these steps:
+
+1. Fork the repository on GitHub.
+2. Clone your fork locally:
+   git clone [https://github.com/your-username/cigoffice.git]
+   cd cigoffice
+
+3. Create a new branch for your feature or bug fix:
+   git checkout -b [feature-or-bug-fix-name]
+   git push origin [feature-or-bug-fix-name]
+
+4. Make your changes and commit them:
+   git add .
+   git commit -m "[Your commit message]"
+   git push origin [feature-or-bug-fix-name]
+
+5. Submit a pull request to the main repository.
+
+## License
+
+The CIGBurguer Office Application is licensed under the MIT License. See the `LICENSE` file for more information.
+
+## Contact
+
+For any questions or inquiries about the CIGBurguer Office Application, please contact the author at [spenna.live@gmail.com](spenna.live@gmail.com).

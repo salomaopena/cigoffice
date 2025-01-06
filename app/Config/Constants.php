@@ -92,3 +92,20 @@ define('EVENT_PRIORITY_NORMAL', 100);
  * @deprecated Use \CodeIgniter\Events\Events::PRIORITY_HIGH instead.
  */
 define('EVENT_PRIORITY_HIGH', 10);
+
+
+
+// BEGIN custom constants
+//custom constants
+
+define('APP_NAME',           'CigBurguer');
+define('APP_VERSION',        '1.0.0');
+
+
+//MySQL Constants
+define('DB_HOST',      'localhost');
+define('DB_NAME',      'cigburguer_office_app');
+define('DB_USER',      'cigburguer_office_app_admin');
+define('DB_PASS',      'GsCl23!G8/9)Y3UK');
+// END custom constants
+
