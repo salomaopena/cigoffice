@@ -7,13 +7,17 @@ use CodeIgniter\HTTP\ResponseInterface;
 
 class Auth extends BaseController
 {
-    public function index():string
+    public function login():string
     {
         return view('auth/login-form');
     }
 
-    public function teste():string 
+    public function login_submit()
     {
-        return view('teste');
+        echo('Login submit');
+    }
+
+    public function logout(){
+        echo('Estou saindo do sistema...');
     }
 }
