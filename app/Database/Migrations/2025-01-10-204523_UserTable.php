@@ -47,6 +47,12 @@ class UserTable extends Migration
                 'null'              => true,
                 'unique'            => true,
             ],
+            'phone' =>[
+                'type'              => 'VARCHAR',
+                'constraint'        => 20,
+                'null'              => true,
+                'unique'            => true,
+            ],
             'passwrd' =>[
                 'type'              => 'VARCHAR',
                 'constraint'        => 250,
