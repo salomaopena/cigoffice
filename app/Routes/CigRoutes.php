@@ -7,7 +7,11 @@ use Config\Services;
 $routes = Services::routes();
 
 
-// Defining routes here
-$routes->get('/', 'Auth::index');
-$routes->get('/teste', 'Auth::teste');
-$routes->get('/users', 'Users::index');
+// main routes
+$routes->get('/','Main::index');
+
+//login routes
+
+$routes->get('/auth/login', 'Auth::login');
+$routes->get('/auth/login-submit', 'Auth::login_submit');
+$routes->get('/auth/logout', 'Auth::logout');
