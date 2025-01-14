@@ -109,3 +109,6 @@ define('DB_USER',      'cigburguer_office_app_admin');
 define('DB_PASS',      'GsCl23!G8/9)Y3UK');
 // END custom constants
 
+//encrypt
+define('ENCRYPTION_KEY', '!FXcuT9swzrx4n<]/+GIz#KLkGyw_9fb#4@"+o;hPHQwaX1$1OwQlsYAu28X+DT(');
+

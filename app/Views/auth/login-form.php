@@ -6,28 +6,37 @@
     <div class="login-box">
 
     <div class="text-center mb-3">
-        <img class="img-fluid" src="<?= base_url('assets/images/logo.png')?>" alt="logo" width="100">
+        <img class="img-fluid" src="<?= base_url('assets/images/logo.png') ?>" alt="logo" width="100">
     </div>
 
 
-    <form>
-        <div class="mb-3">
-            <select name="restaurante" id="restaurante" class="form-control">
-                <option value="admin">Admin</option>
-                <option value="user">User</option>
-                <option value="guest">Guest</option>
-            </select>
-        </div>
-        <div class="mb-3">
-            <input name="txt-email" type="email" class="form-control" id="email" placeholder="Email address">
-        </div>
-        <div class="mb-3">
-            <input name="txt-password" type="password" class="form-control" id="password" placeholder="Password">
-        </div>
-        <div class="mb-3">
-            <button type="submit" class="btn btn-primary btn-block btn-login">Login</button>
-        </div>
-    </form>
+    <?= form_open('auth/login-submit', ['novalidate' => true]) ?>
+    <div class="mb-3">
+        <select name="restaurant_selected" id="restaurant_selected" class="form-control">
+            <option value=""></option>
+            <?php foreach ($restaurants as $restaurant) : ?>
+                <?php
+                $selected = '';
+                if (!empty($restaurant_selected) && $restaurant_selected == $restaurant->id) {
+                    $selected = 'selected';
+                } ?>
+                <option value="<?=Encrypt($restaurant->id)?>"<?=$selected?>><?= $restaurant->name ?></option>
+            <?php endforeach ?>
+        </select>
+        <?= display_error('restaurant_selected', $validation_errors) ?>
+    </div>
+    <div class="mb-3">
+        <input name="email" type="email" value="<?= old('email') ?>" class="form-control" id="email" placeholder="Email">
+        <?= display_error('email', $validation_errors) ?>
+    </div>
+    <div class="mb-3">
+        <input name="password" type="password" value="<?= old('password') ?>" class="form-control" id="password" placeholder="Password">
+        <?= display_error('password', $validation_errors) ?>
+    </div>
+    <div class="mb-3">
+        <button type="submit" class="btn btn-primary btn-block btn-login">Login</button>
+    </div>
+    <?= form_close() ?>
     <div class="text-center mt-1 login-link">
         <p class="text-muted">Esqueceu a senha? <a href="#">Recuperar</a></p>
     </div> <!-- fim-->

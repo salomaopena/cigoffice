@@ -12,6 +12,7 @@ use CodeIgniter\Filters\InvalidChars;
 use CodeIgniter\Filters\PageCache;
 use CodeIgniter\Filters\PerformanceMetrics;
 use CodeIgniter\Filters\SecureHeaders;
+use App\Filters\UserIsLogIn;
 
 class Filters extends BaseFilters
 {
@@ -34,6 +35,7 @@ class Filters extends BaseFilters
         'forcehttps'    => ForceHTTPS::class,
         'pagecache'     => PageCache::class,
         'performance'   => PerformanceMetrics::class,
+        'userislogin'   => UserIsLogIn::class
     ];
 
     /**
@@ -69,6 +71,13 @@ class Filters extends BaseFilters
      */
     public array $globals = [
         'before' => [
+            'userislogin'   => [
+                'except' => [
+                    '/auth/login',
+                    '/auth/logout',
+                    '/auth/login-submit',
+                ]
+            ],
             // 'honeypot',
             // 'csrf',
             // 'invalidchars',
