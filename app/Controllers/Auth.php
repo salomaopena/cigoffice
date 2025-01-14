@@ -15,10 +15,12 @@ class Auth extends BaseController
         $restaurants = $restaurant_model->select('id, name')->findAll();
         //Pass restaurant data to the view
         $data['restaurants'] = $restaurants;
+        
 
         //validation errors
         //Pass validation errors to the view
         $data['validation_errors'] = session()->getFlashdata('validation_errors');
+        $data['restaurant_selected'] = session()->getFlashdata('restaurant_selected');
 
         //Load the login form view
         return view('auth/login-form', $data);
@@ -29,7 +31,7 @@ class Auth extends BaseController
 
         //validation 
         $validation = $this->validate([
-            'restaurant' => [
+            'restaurant_selected' => [
                 'label' => 'Restaurante',
                 'rules' => 'required',
                 'errors' => [
@@ -58,11 +60,12 @@ class Auth extends BaseController
         ]);
 
         if (!$validation) {
+            session()->setFlashdata('restaurant_selected', Decrypt($this->request->getPost('restaurant_selected')));
             return redirect()->back()->withInput()->with('validation_errors', $this->validator->getErrors());
         }
 
         //show id restaurant
-        $restaurant_id = Decrypt($this->request->getPost('restaurant'));
+        $restaurant_id = Decrypt($this->request->getPost('restaurant_selected'));
 
         echo ('Login submit ' . $restaurant_id);
     }

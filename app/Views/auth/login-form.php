@@ -10,23 +10,28 @@
     </div>
 
 
-    <?=form_open('auth/login-submit',['novalidate' => true]) ?>
+    <?= form_open('auth/login-submit', ['novalidate' => true]) ?>
     <div class="mb-3">
-        <select name="restaurant" id="restaurant" class="form-control">
-            <option value="" selected></option>
+        <select name="restaurant_selected" id="restaurant_selected" class="form-control">
+            <option value=""></option>
             <?php foreach ($restaurants as $restaurant) : ?>
-                <option value="<?=Encrypt($restaurant->id) ?>"><?= $restaurant->name ?></option>
+                <?php
+                $selected = '';
+                if (!empty($restaurant_selected) && $restaurant_selected == $restaurant->id) {
+                    $selected = 'selected';
+                } ?>
+                <option value="<?=Encrypt($restaurant->id)?>"<?=$selected?>><?= $restaurant->name ?></option>
             <?php endforeach ?>
         </select>
-        <?= display_error('restaurant',$validation_errors)?>
+        <?= display_error('restaurant_selected', $validation_errors) ?>
     </div>
     <div class="mb-3">
-        <input name="email" type="email" value="<?=old('email')?>" class="form-control" id="email" placeholder="Email">
-        <?= display_error('email',$validation_errors)?>
+        <input name="email" type="email" value="<?= old('email') ?>" class="form-control" id="email" placeholder="Email">
+        <?= display_error('email', $validation_errors) ?>
     </div>
     <div class="mb-3">
-        <input name="password" type="password" value="<?=old('password')?>"  class="form-control" id="password" placeholder="Password">
-        <?= display_error('password',$validation_errors)?>
+        <input name="password" type="password" value="<?= old('password') ?>" class="form-control" id="password" placeholder="Password">
+        <?= display_error('password', $validation_errors) ?>
     </div>
     <div class="mb-3">
         <button type="submit" class="btn btn-primary btn-block btn-login">Login</button>
