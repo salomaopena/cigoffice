@@ -26,7 +26,7 @@ class UserIsLogIn implements FilterInterface
     public function before(RequestInterface $request, $arguments = null)
     {
         // Check if the user is logged in
-        if (!session()->has('username')) {
+        if (!session()->has('user')) {
             return redirect()->to('/auth/login');
         }
     }
