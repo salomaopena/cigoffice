@@ -39,7 +39,7 @@
         </nav>
 
         <!-- main content-->
-        <main class="content p-3 container-fluid mt-3">
+        <main class="content p-4 flex-fill">
             <?= $this->renderSection('content') ?>
         </main>
 

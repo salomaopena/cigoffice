@@ -9,6 +9,6 @@ class Main extends BaseController
 {
     public function index()
     {
-        echo('Estou na pagina principal...');
+        return view('dashboard/home');
     }
 }
