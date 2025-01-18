@@ -17,6 +17,10 @@ class Products extends BaseController
     }
 
     public function new_product():string{
-        return 'Novo Produto';
+        $data = [
+            'title' => 'Productos',
+            'page' => 'Novo produto'
+        ];
+        return view('dashboard/products/new_product_form',$data);
     }
 }
