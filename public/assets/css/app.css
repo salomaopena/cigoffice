@@ -34,6 +34,10 @@
     font-family: "Rajdhani", serif;
 }
 
+body{
+  background-color: var(--content-bg-color);
+}
+
   /* top bar*/
   .top-bar{
     background: var(--top-bar-bg-color);
@@ -70,8 +74,9 @@
   .main-menu{
     background: var(--menu-bg-color);
     color: var(--menu-fg-color);
-    min-height: 100vh;
+    min-height: 90vh;
     min-width: 250px;
+    max-width: 250px;
     z-index: 1000;
     transition: transform 0.3s ease;
   }
@@ -116,7 +121,7 @@
     background:var(--color-white);
     color:var(--color-black);
     padding: 20px;
-    margin: 5px;
+    margin: 5px 0px;
     border-radius: 5px;
     box-shadow: var(--shadow);
   }
@@ -226,4 +231,12 @@
 
   .login-link a:hover{
     color: var(--login-link-hover);
+  }
+
+  /*products*/
+
+  .product-image{
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
   }

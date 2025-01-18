@@ -67,7 +67,7 @@
     let loginData = [
         {
             email: 'admin1@email.com',
-            password: 'user1',
+            password: 'admin1',
             restaurant: 1,
         },
         {

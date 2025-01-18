@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CigBurguer Backoffice</title>
+    <title>CigBurguer Backoffice - <?= !empty($title)? $title : '' ?> </title>
 
     <!-- favicon-->
     <link rel="shortcut icon" href="<?= base_url('assets/images/logo.png') ?>" type="image/png">
@@ -39,7 +39,7 @@
         </nav>
 
         <!-- main content-->
-        <main class="content p-3 container-fluid mt-3">
+        <main class="content p-4 flex-fill">
             <?= $this->renderSection('content') ?>
         </main>
 
