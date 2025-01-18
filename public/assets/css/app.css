@@ -76,6 +76,7 @@ body{
     color: var(--menu-fg-color);
     min-height: 90vh;
     min-width: 250px;
+    max-width: 250px;
     z-index: 1000;
     transition: transform 0.3s ease;
   }

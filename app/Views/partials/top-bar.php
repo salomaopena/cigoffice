@@ -9,7 +9,7 @@
     <div>
         <!-- User | Logout-->
         <i class="fa-solid fa-user me-3"></i><?=session()->user['first_name']?> <?=session()->user['last_name']?>
-        <i class="fa-solid fa-ellipsis-vertical mx-2"></i>
+        <i class="fa-solid fa-ellipsis-vertical mx-3"></i>
         <a href="<?=site_url('auth/logout')?>"><i class="fa-solid fa-right-from-bracket"></i> Sair</a>
     </div>
 </header>
