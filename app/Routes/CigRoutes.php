@@ -15,3 +15,8 @@ $routes->get('/','Main::index');
 $routes->get('auth/login', 'Auth::login');
 $routes->post('auth/login-submit', 'Auth::login_submit');
 $routes->get('auth/logout', 'Auth::logout');
+
+//dashboard routes
+//products routes
+$routes->get('products', 'Products::index');
+$routes->get('products/new', 'Products::new_product');
