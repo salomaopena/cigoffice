@@ -13,6 +13,7 @@ class ProductModel extends Model
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
     protected $allowedFields    = [
+        'id_restaurant',
         'name',
         'description',
         'category',

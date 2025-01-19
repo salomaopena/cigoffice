@@ -19,4 +19,5 @@ $routes->get('auth/logout', 'Auth::logout');
 //dashboard routes
 //products routes
 $routes->get('products', 'Products::index');
-$routes->get('products/new', 'Products::new_product');
+$routes->get('products/new', 'Products::newProduct');
+$routes->post('products/new/submit','Products::newSubmit');
