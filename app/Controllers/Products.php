@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
+use App\Models\ProductModel;
 use CodeIgniter\HTTP\ResponseInterface;
 
 class Products extends BaseController
@@ -13,6 +14,12 @@ class Products extends BaseController
             'title' => 'Productos',
             'page' => 'Produtos'
         ];
+
+        $product_model = new ProductModel();
+        $data['products'] = $product_model
+        ->where('id_restaurant',session()->user['id_restaurant'])
+        ->findAll();
+
         return view('dashboard/products/index', $data);
     }
 
@@ -24,6 +31,13 @@ class Products extends BaseController
         ];
         $data['validation_errors'] = session()->getFlashdata('validation_errors');
 
+        //select disticnt
+        $product_model = new ProductModel();
+
+        $data['categories'] = $product_model
+        ->where('id_restaurant',session()->user['id_restaurant'])
+        ->select('category')->distinct()
+        ->findAll();
         return view('dashboard/products/new_product_form', $data);
     }
 
