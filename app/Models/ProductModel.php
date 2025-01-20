@@ -23,6 +23,7 @@ class ProductModel extends Model
         'stock',
         'stock_min_limit',
         'image',
+        'created_at',
     ];
 
     protected bool $allowEmptyInserts = false;
