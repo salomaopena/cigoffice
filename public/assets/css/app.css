@@ -240,3 +240,7 @@ body{
     height: 200px;
     object-fit: cover;
   }
+
+  .overflow-hidden{
+    overflow: hidden;
+  }
