@@ -166,4 +166,60 @@ class Products extends BaseController
         //redirect to products list
         return redirect()->to(site_url('products'));
     }
+
+
+    public function edit($enc_id){
+        
+        $id = Decrypt($enc_id);
+
+        if(empty($id)){
+            return redirect()->to(site_url('products'));
+        }
+
+        $data = [
+            'title' => 'Productos',
+            'page' => 'Editar produto'
+        ];
+       
+        //validation form
+        $data['validation_errors'] = session()->getFlashdata('validation_errors');
+
+        //get product $data
+        $product_model = new ProductModel();
+
+        $data['product'] = $product_model->find($id);
+
+        //get distinct categories
+        $data['categories'] = $product_model
+        ->where('id_restaurant',session()->user['id_restaurant'])
+        ->select('category')->distinct()
+        ->findAll();
+
+        //check if the image product exists
+        if(empty($data['product']->image) && !file_exists(ROOTPATH.'public/assets/images/products/'.$data['product']->image)){
+            $data['product']->image = 'no_image.png';
+        }
+
+        return view('dashboard/products/edit_product_form', $data);
+    }
+
+    public function editSubmit(){
+        
+    }
+
+    public function delete($id){
+        $product_model = new ProductModel();
+        //$product = $product_model->find($id);
+        //$product_model->delete($product->id);
+        //delete the image
+        //unlink(ROOTPATH.'public/assets/images/products/'.$product->image);
+        //redirect to products list
+        //return redirect()->to(site_url('products'));
+    }
+
+    public function deleteConfirm(){
+        //get id from post
+        $id = $this->request->getPost('id');
+        return view('dashboard/products/delete_product_confirm', ['id' => $id]);
+    }
 }
