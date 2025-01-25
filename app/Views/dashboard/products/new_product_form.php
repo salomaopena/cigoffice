@@ -11,7 +11,7 @@
 
             <!-- image -->
             <div class="text-center">
-                <img class="product-image img-fluid" id="product_image">
+                <img src="<?=base_url('assets/images/products/no_image.png')?>" class="product-image img-fluid" id="product_image">
             </div>
 
             <!-- file upload -->
