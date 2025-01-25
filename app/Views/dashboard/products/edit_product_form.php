@@ -6,14 +6,14 @@
     <?= form_open_multipart('products/edit/submit', ['novalidate' => true]) ?>
 
     <input type="hidden" name="id_product" value="<?= Encrypt($product->id) ?>">
-    
+
     <div class="row">
 
         <div class="col-lg-4 col-12 px-5 pt-5">
 
             <!-- image -->
             <div class="text-center">
-                <img src="<?=base_url('assets/images/products/' .$product->image)?>" class="product-image img-fluid" id="product_image">
+                <img src="<?= base_url('assets/images/products/' . $product->image) ?>" class="product-image img-fluid" id="product_image">
             </div>
 
             <!-- file upload -->
@@ -33,12 +33,22 @@
                 <input type="text" name="text_name" id="text_name" value="<?= old('text_name', $product->name) ?>" class="form-control" placeholder="Nome do produto">
                 <?= display_error('text_name', $validation_errors) ?>
 
+                <?php if (!empty($server_error)): ?>
+                    <div class="row">
+                        <div class="col">
+                            <div class="alert alert-danger p-2 mt-2" role="alert">
+                                <i class="fa-solid fa-triangle-exclamation me-2"></i> <?= $server_error ?>
+                            </div>
+                        </div>
+                    </div>
+                <?php endif; ?>
+
             </div>
 
             <!-- description -->
             <div class="mb-3">
                 <label for="description" class="form-label">Descrição do produto</label>
-                <input type="text" name="text_description" id="text_description" value="<?= old('text_description',$product->description) ?>" class="form-control" placeholder="Descrição do produto">
+                <input type="text" name="text_description" id="text_description" value="<?= old('text_description', $product->description) ?>" class="form-control" placeholder="Descrição do produto">
                 <?= display_error('text_description', $validation_errors) ?>
             </div>
 
@@ -59,7 +69,7 @@
                 <div class="col-lg-6 col-12">
                     <div class="mb-3">
                         <label for="price" class="form-label">Preço</label>
-                        <input type="text" name="text_price" id="text_price" value="<?= old('text_price',preg_replace('/\./',',', $product->price)) ?>" class="form-control" placeholder="Preço">
+                        <input type="text" name="text_price" id="text_price" value="<?= old('text_price', preg_replace('/\./', ',', $product->price)) ?>" class="form-control" placeholder="Preço">
                         <?= display_error('text_price', $validation_errors) ?>
                     </div>
                 </div>
@@ -68,12 +78,12 @@
             <!-- available and promotion -->
             <div class="row">
                 <div class="col-lg-6 col-12 align-self-center mb-3">
-                    <input type="checkbox" name="check_available" id="check_available" <?= $product->availability ? 'checked': ''?>>
+                    <input type="checkbox" name="check_available" id="check_available" <?= $product->availability ? 'checked' : '' ?>>
                     <label for="check_available" class="form-label">Produto disponível.</label>
                 </div>
                 <div class="col-lg-6 col-12 mb-3">
                     <label for="promotion" class="form-label">Promoção</label>
-                    <input type="text" name="text_promotion" id="text_promotion" value="<?= old('text_promotion',intval($product->promotion)) ?>" class="form-control" placeholder="Promoção">
+                    <input type="text" name="text_promotion" id="text_promotion" value="<?= old('text_promotion', intval($product->promotion)) ?>" class="form-control" placeholder="Promoção">
                     <?= display_error('text_promotion', $validation_errors) ?>
                 </div>
             </div>
@@ -83,7 +93,7 @@
 
                 <div class="col-lg-6 col-12 mb-3">
                     <label for="stock_minimum_limit" class="form-label">Limite mínimo de estoque</label>
-                    <input type="text" name="text_stock_minimum_limit" id="text_stock_minimum_limit" class="form-control" value="<?= old('text_stock_minimum_limit',$product->stock_min_limit) ?>" placeholder="Limite mínimo de estoque">
+                    <input type="text" name="text_stock_minimum_limit" id="text_stock_minimum_limit" class="form-control" value="<?= old('text_stock_minimum_limit', $product->stock_min_limit) ?>" placeholder="Limite mínimo de estoque">
                     <?= display_error('text_stock_minimum_limit', $validation_errors) ?>
                 </div>
 
