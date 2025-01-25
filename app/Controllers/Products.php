@@ -22,6 +22,9 @@ class Products extends BaseController
         return view('dashboard/products/index', $data);
     }
 
+    //______________________________
+    // New Product
+    //______________________________
     public function newProduct(): string
     {
         $data = [
@@ -172,7 +175,9 @@ class Products extends BaseController
         return redirect()->to(site_url('products'));
     }
 
-
+    //______________________________
+    // Edit Product
+    //______________________________
     public function edit($enc_id)
     {
 
@@ -338,21 +343,58 @@ class Products extends BaseController
         return redirect()->to(site_url('products'));
     }
 
-    public function delete($id)
+    //______________________________
+    // Delete Product
+    //______________________________
+
+    public function delete($enc_id)
     {
+        //check if $id is ok
+        $id = Decrypt($enc_id);
+
+        if (empty($id)) {
+            return redirect()->to(site_url('products'));
+        }
+
+        //check if the product exist
         $product_model = new ProductModel();
-        //$product = $product_model->find($id);
-        //$product_model->delete($product->id);
-        //delete the image
-        //unlink(ROOTPATH.'public/assets/images/products/'.$product->image);
-        //redirect to products list
-        //return redirect()->to(site_url('products'));
+        $product = $product_model->find($id);
+        if (!$product) {
+            return redirect()->to(site_url('products'));
+        }
+
+        //show confirm delete product dialog
+
+        $data = [
+            'title' => 'Productos',
+            'page' => 'Excluir produto',
+            'product' => $product,
+            'message' => 'Tem certeza que deseja excluir este produto? <strong>É um processo irreversível.</strong>'
+        ];
+
+        return view('dashboard/products/delete_product', $data);
     }
 
-    public function deleteConfirm()
+    public function deleteConfirm($enc_id)
     {
-        //get id from post
-        $id = $this->request->getPost('id');
-        return view('dashboard/products/delete_product_confirm', ['id' => $id]);
+         //check if $id is ok
+         $id = Decrypt($enc_id);
+
+         if (empty($id)) {
+             return redirect()->to(site_url('/products'));
+         }
+ 
+         //check if the product exist
+         $product_model = new ProductModel();
+         $product = $product_model->find($id);
+         if (!$product) {
+             return redirect()->to(site_url('/products'));
+         }
+        
+         //delete the product
+         $product_model->delete($id);
+
+         return redirect()->to(site_url('/products'));
+    
     }
 }
