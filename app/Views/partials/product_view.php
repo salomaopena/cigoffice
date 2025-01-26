@@ -44,9 +44,7 @@
                     <?php if (!$product->availability) : ?>
                         <span class="badge bg-warning text-dark">Indisponível</span>
                     <?php endif; ?>
-
                 </div>
-
 
                 <div class="text-end align-items-bottom">
                     <a href="<?= site_url('products/edit/' . Encrypt($product->id)) ?>" class="btn btn-sm btn-outline-secondary px-3 m-1"><i class="fa-regular fa-pen-to-square me-2"></i>Editar</a>
@@ -57,6 +55,3 @@
         </div>
     </div>
 </div>
-
-
-
