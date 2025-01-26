@@ -11,7 +11,7 @@
             }
             ?>
             <div>
-                <img src="<?= $file_image ?>" class="img-fluid" alt="<?= $product->image ?>">
+                <img src="<?= $file_image ?>" class="img-fluid product-image" alt="<?= $product->name ?>">
             </div>
             <div class="ms-4 w-100">
                 <h3 class="m-0"><strong><?= $product->name ?></strong></h3>
