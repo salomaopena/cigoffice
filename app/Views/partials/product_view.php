@@ -11,7 +11,7 @@
             }
             ?>
             <div>
-                <img src="<?= $file_image ?>" class="img-fluid" alt="<?= $product->image ?>">
+                <img src="<?= $file_image ?>" class="img-fluid product-image" alt="<?= $product->name ?>">
             </div>
             <div class="ms-4 w-100">
                 <h3 class="m-0"><strong><?= $product->name ?></strong></h3>
@@ -44,9 +44,7 @@
                     <?php if (!$product->availability) : ?>
                         <span class="badge bg-warning text-dark">Indisponível</span>
                     <?php endif; ?>
-
                 </div>
-
 
                 <div class="text-end align-items-bottom">
                     <a href="<?= site_url('products/edit/' . Encrypt($product->id)) ?>" class="btn btn-sm btn-outline-secondary px-3 m-1"><i class="fa-regular fa-pen-to-square me-2"></i>Editar</a>
@@ -57,6 +55,3 @@
         </div>
     </div>
 </div>
-
-
-
