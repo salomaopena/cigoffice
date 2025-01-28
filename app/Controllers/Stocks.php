@@ -11,9 +11,9 @@ class Stocks extends BaseController
     public function index()
     {
         //prepare page data
-        $product_model = New ProductModel();
-        $products = $product_model->where('id_restaurant',session()->user['id_restaurant'])->findAll();
-        
+        $product_model = new ProductModel();
+        $products = $product_model->where('id_restaurant', session()->user['id_restaurant'])->findAll();
+
         $data = [
             'title' => 'Stocks',
             'page' => 'Stocks',
@@ -21,5 +21,32 @@ class Stocks extends BaseController
         ];
         //load product data
         return view('dashboard/stocks/stocks', $data);
+    }
+
+    public function addStock($enc_id)
+    {
+        $id = Decrypt($enc_id);
+
+        if (empty($id)) {
+            return redirect()->to(site_url('/stocks'));
+        }
+
+        $product_model = new ProductModel();
+        $product = $product_model->where('id',$id)->first();
+
+        //implement add stock functionality here
+        $data = [
+            'title' => 'Adicionar Stock',
+            'page' => 'Adicionar Stock',
+            'product' => $product, //get product data
+        ];
+        return view('dashboard/stocks/add_form', $data);
+    }
+
+    public function submitStock() {
+        //implement stock submission logic here
+        //...
+        //return redirect()->to('/stocks')->with('success', 'Stock adicionado com sucesso!');
+        echo('OK');
     }
 }
