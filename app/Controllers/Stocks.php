@@ -39,13 +39,14 @@ class Stocks extends BaseController
         $stock_model = new StockModel();
         $suppliers = $stock_model->get_stock_supplier(session()->user['id_restaurant']);
 
-        print_data($suppliers);
+        //print_data($suppliers);
 
         $data = [
             'title' => 'Adicionar Stock',
             'page' => 'Adicionar Stock',
             'product' => $product, //get product data
             'suppliers' => $suppliers, //get distinct suppliers
+            'validation_errors' => session()->getFlashdata('validation_errors') //get validation errors if any
         ];
 
         return view('dashboard/stocks/add_form', $data);
@@ -54,8 +55,51 @@ class Stocks extends BaseController
     public function submitStock()
     {
         //implement stock submission logic here
-        //...
+        //
+
+        $validation = $this->validate($this->_stock_add_form_validation());
+
+        if (!$validation) {
+            return redirect()->back()->withInput()->with('validation_errors', $this->validator->getErrors());
+        }
+
+        $id_product = Decrypt($this->request->getPost('id_product'));
+
         //return redirect()->to('/stocks')->with('success', 'Stock adicionado com sucesso!');
-        echo ('OK');
+        echo ('OK: id->'.$id_product);
+    }
+
+    private function _stock_add_form_validation()
+    {
+        return [
+            'id_product' => [
+                'rules' => 'required',
+            ],
+            'text_stock' => [
+                'label' => 'Quantidade',
+                'rules' => 'required|integer|greater_than[0]',
+                'errors' => [
+                    'required' => 'O campo {field} é obrigatório.',
+                    'integer' => 'O campo {field} precisa ser um número inteiro.',
+                    'greater_than' => 'O campo {field} precisa ser um número maior que {param}.'
+                ]
+            ],
+            'text_supplier' => [
+                'label' => 'Fornecedor',
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'O campo {field} é obrigatório.'
+                ]
+            ],
+            //'text_reason' not required
+            'text_date' =>[
+                'label' => 'Data do movimento',
+                'rules' => 'required|valid_date[Y-m-d]',
+                'errors' => [
+                   'required' => 'O campo {field} é obrigatório.',
+                    'valid_date' => 'O campo {field} precisa ser uma data válida (Y-m-d).'
+                ]
+            ]
+        ];
     }
 }
