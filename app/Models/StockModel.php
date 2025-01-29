@@ -51,5 +51,22 @@ class StockModel extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
+
+    public function get_stock_supplier($id_restaurant){
+        //get suppliers whi
+        //where id_restaurant is $id_restaurant
+        //and stock_in_out is 'Entrada de Stock'
+        //and stock_quantity > 0
+        //order by stock_quantity DESC
+        //limit 10
+        $builder = $this->db->table('stocks')
+                ->distinct()
+                ->select('stocks.stock_supplier')
+                ->join('products','products.id=stocks.id_product')
+                ->where('products.id_restaurant',$id_restaurant)
+                ->where('stocks.stock_in_out','IN');
+        $query = $builder->get();
+        return $query->getResult();
+    }
 }
 

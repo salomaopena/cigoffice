@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Controllers\BaseController;
 use App\Models\ProductModel;
+use App\Models\StockModel;
 use CodeIgniter\HTTP\ResponseInterface;
 
 class Stocks extends BaseController
@@ -32,21 +33,29 @@ class Stocks extends BaseController
         }
 
         $product_model = new ProductModel();
-        $product = $product_model->where('id',$id)->first();
+        $product = $product_model->where('id', $id)->first();
 
-        //implement add stock functionality here
+        // get distinct suppliers within stocks table that belongs to this restaurant
+        $stock_model = new StockModel();
+        $suppliers = $stock_model->get_stock_supplier(session()->user['id_restaurant']);
+
+        print_data($suppliers);
+
         $data = [
             'title' => 'Adicionar Stock',
             'page' => 'Adicionar Stock',
             'product' => $product, //get product data
+            'suppliers' => $suppliers, //get distinct suppliers
         ];
+
         return view('dashboard/stocks/add_form', $data);
     }
 
-    public function submitStock() {
+    public function submitStock()
+    {
         //implement stock submission logic here
         //...
         //return redirect()->to('/stocks')->with('success', 'Stock adicionado com sucesso!');
-        echo('OK');
+        echo ('OK');
     }
 }
