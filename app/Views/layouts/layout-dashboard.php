@@ -12,6 +12,9 @@
     <!-- bootstrap-->
     <link rel="stylesheet" href="<?= base_url('assets/libs/bootstrap/bootstrap.min.css') ?>">
 
+    <!-- flatpickr-->
+     <link rel="stylesheet" href="<?=base_url('assets/flatpickr/flatpickr.min.css')?>">
+
     <!-- Fontawesome-->
     <link rel="stylesheet" href="<?= base_url('assets/libs/fontawesome/all.min.css') ?>">
 
@@ -50,6 +53,7 @@
 
     <!-- scripts-->
     <script src="<?= base_url('assets/libs/bootstrap/bootstrap.bundle.min.js') ?>"></script>
+    <script src="<?= base_url('assets/flatpickr/flatpickr.min.js')?>"></script>
 
     <script>
         // sidebar collapse
