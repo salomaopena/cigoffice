@@ -16,6 +16,7 @@ class StockSeeder extends Seeder
                 'stock_in_out' => 'IN',
                 'stock_supplier' => 'CafeeTop',
                 'reason' => '',
+                'moviment_date' => date('Y-m-d H:i:s'),
                 'created_at' => date('Y-m-d H:i:s')
             ],
             [
@@ -24,6 +25,7 @@ class StockSeeder extends Seeder
                 'stock_in_out' => 'IN',
                 'stock_supplier' => 'Coca Cola',
                 'reason' => '',
+                'moviment_date' => date('Y-m-d H:i:s'),
                 'created_at' => date('Y-m-d H:i:s')
             ],
             [
@@ -32,6 +34,7 @@ class StockSeeder extends Seeder
                 'stock_in_out' => 'IN',
                 'stock_supplier' => 'CafeeTop',
                 'reason' => '',
+                'moviment_date' => date('Y-m-d H:i:s'),
                 'created_at' => date('Y-m-d H:i:s')
             ],
             [
@@ -40,6 +43,7 @@ class StockSeeder extends Seeder
                 'stock_in_out' => 'IN',
                 'stock_supplier' => 'Coca Cola',
                 'reason' => '',
+                'moviment_date' => date('Y-m-d H:i:s'),
                 'created_at' => date('Y-m-d H:i:s')
             ],
             [
@@ -48,6 +52,7 @@ class StockSeeder extends Seeder
                 'stock_in_out' => 'IN',
                 'stock_supplier' => 'Desconhecido',
                 'reason' => '',
+                'moviment_date' => date('Y-m-d H:i:s'),
                 'created_at' => date('Y-m-d H:i:s')
             ],
             [
@@ -56,6 +61,7 @@ class StockSeeder extends Seeder
                 'stock_in_out' => 'IN',
                 'stock_supplier' => 'Starbucks',
                 'reason' => '',
+                'moviment_date' => date('Y-m-d H:i:s'),
                 'created_at' => date('Y-m-d H:i:s')
             ],
 
@@ -66,6 +72,7 @@ class StockSeeder extends Seeder
                 'stock_in_out' => 'OUT',
                 'stock_supplier' => 'Owner',
                 'reason' => 'Out of date',
+                'moviment_date' => date('Y-m-d H:i:s'),
                 'created_at' => date('Y-m-d H:i:s')
             ],
             [
@@ -74,6 +81,7 @@ class StockSeeder extends Seeder
                 'stock_in_out' => 'OUT',
                 'stock_supplier' => 'Owner',
                 'reason' => 'Out of date',
+                'moviment_date' => date('Y-m-d H:i:s'),
                 'created_at' => date('Y-m-d H:i:s')
             ],
         ];

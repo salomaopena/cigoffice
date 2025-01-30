@@ -47,7 +47,7 @@
                         <div class="col-sm-4 col-12 mb-3">
                             <label for="text_stock" class="form-label">Quantidade</label>
                             <input type="number" class="form-control text-end" id="text_stock" name="text_stock" min="0" value="<?= old('text_stock', 0) ?>">
-                            <?=display_error('text_stock',$validation_errors)?>
+                            <?= display_error('text_stock', $validation_errors) ?>
                         </div>
 
                         <div class="col-sm-3 col-4 mb-3 align-self-center text-end">
@@ -60,7 +60,7 @@
                         <div class="col-sm-8 col-12 mb-3">
                             <label for="text_supplier" class="form-label">Fornecedor</label>
                             <input class="form-control" type="text" id="text_supplier" name="text_supplier" value="<?= old('text_supplier') ?>" list="list_suppliers"></input>
-                            <?=display_error('text_supplier',$validation_errors)?>
+                            <?= display_error('text_supplier', $validation_errors) ?>
 
                             <datalist id="list_suppliers">
                                 <?php foreach ($suppliers as $supplier): ?>
@@ -80,11 +80,16 @@
                     <div class="row">
                         <div class="col-sm-4 col-12 mb-3">
                             <label for="text_date" class="form-label">Data do movimento</label>
-                            <input class="form-control" id="text_date" type="date" name="text_date" value="<?= old('text_date', date('Y-m-d')) ?>"></input>
-                            <?=display_error('text_date',$validation_errors)?>
+                            <input class="form-control" id="text_date" type="date" name="text_date" value="<?= old('text_date') ?>"></input>
+                            <?= display_error('text_date', $validation_errors) ?>
 
                         </div>
                     </div>
+                    <?php if (!empty($server_error)): ?>
+                        <div class="alert alert-danger mb-3 p-2" role="alert">
+                            <?= $server_error ?>
+                        </div>
+                    <?php endif; ?>
 
                     <div>
                         <a href="<?= site_url('/stocks') ?>" class="btn btn-outline-secondary px-5"><i class="fas fa-ban me-2"></i>Cancelar</a>
@@ -103,17 +108,16 @@
 </div>
 
 <script>
-    document.addEventListener('DOMContentLoaded',()=>{
-        flatpickr('#text_date',{
-            dateFormat: 'Y-m-d',
+    document.addEventListener('DOMContentLoaded', () => {
+        flatpickr('#text_date', {
+            dateFormat: 'Y-m-d H:i',
             maxDate: 'today',
-            enableTime: false,
+            enableTime: true,
             time_24hr: true,
             defaultDate: new Date(),
             locale: 'pt',
         })
     });
-    
 </script>
 
 <?= $this->endSection() ?>
