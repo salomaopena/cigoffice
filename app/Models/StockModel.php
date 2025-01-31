@@ -18,6 +18,7 @@ class StockModel extends Model
         'stock_in_out',
         'stock_supplier',
         'reason',
+        'moviment_date',
         'created_at',
         'updated_at',
     ];

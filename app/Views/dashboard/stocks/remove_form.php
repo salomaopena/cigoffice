@@ -39,8 +39,8 @@
             <div class="row">
                 <div class="col">
 
-                    <h5>Adicionar Stock</h5>
-                    <?= form_open('/stocks/add/submit') ?>
+                    <h5>Remover Stock</h5>
+                    <?= form_open('/stocks/remove/submit') ?>
                     <input type="hidden" name="id_product" value="<?= Encrypt($product->id) ?>">
 
                     <div class="row">
@@ -52,21 +52,7 @@
 
                         <div class="col-sm-3 col-4 mb-3 align-self-center text-end">
                             <p class="mb-0">Tipo de movimento</p>
-                            <h4>Entrada de Stock</h4>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-sm-8 col-12 mb-3">
-                            <label for="text_supplier" class="form-label">Fornecedor</label>
-                            <input class="form-control" type="text" id="text_supplier" name="text_supplier" value="<?= old('text_supplier') ?>" list="list_suppliers"></input>
-                            <?= display_error('text_supplier', $validation_errors) ?>
-
-                            <datalist id="list_suppliers">
-                                <?php foreach ($suppliers as $supplier): ?>
-                                    <option value="<?= $supplier->stock_supplier ?>">
-                                    <?php endforeach; ?>
-                            </datalist>
+                            <h4>Saída de Stock</h4>
                         </div>
                     </div>
 
@@ -93,7 +79,7 @@
 
                     <div>
                         <a href="<?= site_url('/stocks') ?>" class="btn btn-outline-secondary px-5"><i class="fas fa-ban me-2"></i>Cancelar</a>
-                        <button type="submit" class="btn btn-outline-success px-5"><i class="fas fa-check me-2"></i>Registar Entrada</button>
+                        <button type="submit" class="btn btn-outline-success px-5"><i class="fas fa-check me-2"></i>Registar Saída</button>
                     </div>
 
 
