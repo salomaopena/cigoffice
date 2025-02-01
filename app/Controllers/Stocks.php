@@ -205,25 +205,25 @@ class Stocks extends BaseController
     private function _stock_remove_form_validation()
     {
         return [
-            'id_product' => [
-                'rules' => 'required',
+            'id_product'    => [
+                'rules'     => 'required',
             ],
-            'text_stock' => [
-                'label' => 'Quantidade',
-                'rules' => 'required|integer|greater_than[0]',
-                'errors' => [
-                    'required' => 'O campo {field} é obrigatório.',
-                    'integer' => 'O campo {field} precisa ser um número inteiro.',
-                    'greater_than' => 'O campo {field} precisa ser um número maior que {param}.'
+            'text_stock'    => [
+                'label'     => 'Quantidade',
+                'rules'     => 'required|integer|greater_than[0]',
+                'errors'    => [
+                    'required'    => 'O campo {field} é obrigatório.',
+                    'integer'     => 'O campo {field} precisa ser um número inteiro.',
+                    'greater_than'=> 'O campo {field} precisa ser um número maior que {param}.'
                 ]
             ],
             //'text_reason' not required
-            'text_date' => [
-                'label' => 'Data do movimento',
-                'rules' => 'required|valid_date[Y-m-d H:i]',
-                'errors' => [
-                    'required' => 'O campo {field} é obrigatório.',
-                    'valid_date' => 'O campo {field} precisa ser uma data e hora válida (AAAA-MM-DD HH:MM).'
+            'text_date'     => [
+                'label'     => 'Data do movimento',
+                'rules'     => 'required|valid_date[Y-m-d H:i]',
+                'errors'    => [
+                    'required'      => 'O campo {field} é obrigatório.',
+                    'valid_date'    => 'O campo {field} precisa ser uma data e hora válida (AAAA-MM-DD HH:MM).'
                 ]
             ]
         ];
