@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CigBurguer Backoffice - <?= !empty($title)? $title : '' ?> </title>
+    <title>CigBurguer Backoffice - <?= !empty($title) ? $title : '' ?> </title>
 
     <!-- favicon-->
     <link rel="shortcut icon" href="<?= base_url('assets/images/logo.png') ?>" type="image/png">
@@ -13,7 +13,11 @@
     <link rel="stylesheet" href="<?= base_url('assets/libs/bootstrap/bootstrap.min.css') ?>">
 
     <!-- flatpickr-->
-     <link rel="stylesheet" href="<?=base_url('assets/flatpickr/flatpickr.min.css')?>">
+    <link rel="stylesheet" href="<?= base_url('assets/flatpickr/flatpickr.min.css') ?>">
+
+    <?php if (!empty($datatables)) : ?>
+        <link rel="stylesheet" href="<?= base_url('assets/datatable/datatables.min.css') ?>">
+    <?php endif; ?>
 
     <!-- Fontawesome-->
     <link rel="stylesheet" href="<?= base_url('assets/libs/fontawesome/all.min.css') ?>">
@@ -25,6 +29,8 @@
 
     <!-- custom css-->
     <link rel="stylesheet" href="<?= base_url('assets/css/app.css') ?>">
+
+
 </head>
 
 </head>
@@ -53,7 +59,11 @@
 
     <!-- scripts-->
     <script src="<?= base_url('assets/libs/bootstrap/bootstrap.bundle.min.js') ?>"></script>
-    <script src="<?= base_url('assets/flatpickr/flatpickr.min.js')?>"></script>
+    <script src="<?= base_url('assets/flatpickr/flatpickr.min.js') ?>"></script>
+
+    <?php if (!empty($datatables)) : ?>
+        <script src="<?= base_url('assets/datatable/datatables.min.js') ?>"></script>
+    <?php endif; ?>
 
     <script>
         // sidebar collapse

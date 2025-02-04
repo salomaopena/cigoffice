@@ -166,6 +166,48 @@ class Stocks extends BaseController
         return redirect()->to(site_url('/stocks'));
     }
 
+    public function moviments($enc_id)
+    {
+        $id = Decrypt($enc_id);
+
+        if (empty($id)) {
+            return redirect()->to(site_url('/stocks'));
+        }
+
+
+        $product_model = new ProductModel();
+        $product = $product_model->where('id', $id)->first();
+
+        //load movement for the product limited to 10000 records
+
+        $movements = $this->_get_stock_movements($id);
+
+        $data = [
+            'title' => 'Entradas e Saídas',
+            'page' => 'Entradas e Saídas',
+            'product' => $product, //get product data
+            'datatables' => true,
+            //'movements' => $movements,
+        ];
+
+        return view('/dashboard/stocks/movements', $data);
+    }
+
+
+    private function _get_stock_movements($id_product, $filters = [])
+    {
+        //load movement for the product limited to 10000 records
+        //get last 10000 records from stocks table where id_product = $id_product
+
+        $stock_model =  new StockModel();
+        $movements = $stock_model
+            ->where('id_product', $id_product)
+            ->orderBy('moviment_date', 'DESC')
+            ->limit(10000)
+            ->findAll();
+
+        return $movements;
+    }
 
 
     private function _stock_add_form_validation()
@@ -214,7 +256,7 @@ class Stocks extends BaseController
                 'errors'    => [
                     'required'    => 'O campo {field} é obrigatório.',
                     'integer'     => 'O campo {field} precisa ser um número inteiro.',
-                    'greater_than'=> 'O campo {field} precisa ser um número maior que {param}.'
+                    'greater_than' => 'O campo {field} precisa ser um número maior que {param}.'
                 ]
             ],
             //'text_reason' not required
