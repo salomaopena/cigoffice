@@ -32,10 +32,10 @@ $routes->get('/products/delete/confirm/(:alphanum)', 'Products::deleteConfirm/$1
 
 //stocks
 $routes->get('/stocks', 'Stocks::index');
-//$routes->get('/stocks/product/(:alphanum)', 'Stocks::productStock/$1');
 $routes->get('/stocks/add/(:alphanum)', 'Stocks::addStock/$1');
 $routes->post('/stocks/add/submit', 'Stocks::submitStock');
 $routes->get('/stocks/remove/(:alphanum)', 'Stocks::remove/$1');
 $routes->post('/stocks/remove/submit', 'Stocks::submitRemoveStock');
 $routes->get('/stocks/moviments/(:alphanum)', 'Stocks::moviments/$1');
+$routes->get('/stocks/moviments/(:alphanum)/(:alphanum)', 'Stocks::moviments/$1/$2');
 

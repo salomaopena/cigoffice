@@ -166,7 +166,7 @@ class Stocks extends BaseController
         return redirect()->to(site_url('/stocks'));
     }
 
-    public function moviments($enc_id)
+    public function moviments($enc_id, $filter = null)
     {
         $id = Decrypt($enc_id);
 
@@ -174,37 +174,80 @@ class Stocks extends BaseController
             return redirect()->to(site_url('/stocks'));
         }
 
-
         $product_model = new ProductModel();
         $product = $product_model->where('id', $id)->first();
 
-        //load movement for the product limited to 10000 records
+        $stock_model = new StockModel();
+        $stock_suppliers = $stock_model->get_stock_supplier(session()->user['id_restaurant']);
 
-        $movements = $this->_get_stock_movements($id);
+        //load movement for the product limited to 10000 records
 
         $data = [
             'title' => 'Entradas e Saídas',
             'page' => 'Entradas e Saídas',
             'product' => $product, //get product data
             'datatables' => true,
-            //'movements' => $movements,
+            'movements' => $this->_get_stock_movements($id, $filter),
+            'stock_suppliers' => $stock_suppliers,
+            'filter' => empty($filter) ? '' : Decrypt($filter),
         ];
+
+        //print_data($data);
 
         return view('/dashboard/stocks/movements', $data);
     }
 
 
-    private function _get_stock_movements($id_product, $filters = [])
+    private function _get_stock_movements($id_product, $filter)
     {
         //load movement for the product limited to 10000 records
         //get last 10000 records from stocks table where id_product = $id_product
 
         $stock_model =  new StockModel();
-        $movements = $stock_model
-            ->where('id_product', $id_product)
-            ->orderBy('moviment_date', 'DESC')
-            ->limit(10000)
-            ->findAll();
+        $movements = [];
+
+        $filter = Decrypt($filter);
+
+        switch ($filter):
+            case '':
+                $movements = $stock_model
+                    ->where('id_product', $id_product)
+                    ->orderBy('moviment_date', 'DESC')
+                    ->limit(10000)
+                    ->findAll();
+                break;
+            case 'IN':
+                $movements = $stock_model
+                    ->where('id_product', $id_product)
+                    ->where('stock_in_out', 'IN')
+                    ->orderBy('moviment_date', 'DESC')
+                    ->limit(10000)
+                    ->findAll();
+                break;
+            case 'OUT':
+                $movements = $stock_model
+                    ->where('id_product', $id_product)
+                    ->where('stock_in_out', 'OUT')
+                    ->orderBy('moviment_date', 'DESC')
+                    ->limit(10000)
+                    ->findAll();
+                break;
+            case substr($filter, 0, 6) == 'stksup':
+                $supplier = substr($filter, 7);
+                $movements = $stock_model
+                    ->where('id_product', $id_product)
+                    ->where('stock_supplier', $supplier)
+                    ->orderBy('moviment_date', 'DESC')
+                    ->limit(10000)
+                    ->findAll();
+                break;
+            default:
+                $movements = $stock_model
+                    ->where('id_product', $id_product)
+                    ->orderBy('moviment_date', 'DESC')
+                    ->limit(10000)
+                    ->findAll();
+        endswitch;
 
         return $movements;
     }
