@@ -47,7 +47,7 @@
 
                     <div class="text-end align-items-bottom">
                         <a href="<?= site_url('products/edit/' . Encrypt($product->id)) ?>" class="btn btn-sm btn-outline-secondary px-3 m-1"><i class="fa-regular fa-pen-to-square me-2"></i>Editar</a>
-                        <a href="<?= site_url('/stocks/add/' . Encrypt($product->id)) ?>" class="btn btn-sm btn-outline-warning px-3 m-1"><i class="fa-solid fa-cubes-stacked me-2"></i>Stock</a>
+                        <a href="<?= site_url('/stocks/moviments/' . Encrypt($product->id)) ?>" class="btn btn-sm btn-outline-warning px-3 m-1"><i class="fa-solid fa-cubes-stacked me-2"></i>Stock</a>
                         <a href="<?= site_url('products/delete/' . Encrypt($product->id)) ?>" class="btn btn-sm btn-outline-danger px-3 m-1"><i class="fa-regular fa-trash-can me-2"></i>Excluir</a>
                     </div>
                 </div>
