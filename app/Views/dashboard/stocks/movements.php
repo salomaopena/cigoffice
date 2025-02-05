@@ -35,8 +35,87 @@
             </div>
 
             <hr>
+
+            <table class="table table-striped table-bordered" id="datatable">
+                <thead class="table-dark">
+                    <tr>
+                        <th class="text-center">Data do movimento</th>
+                        <th class="text-center">Quantidade</th>
+                        <th class="text-center">Operação</th>
+                        <th class="text-center">Fornecedor</th>
+                        <th>Notas</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+
         </div>
     </div>
 </div>
+
+<script>
+    $(document).ready(() => {
+        $('#datatable').DataTable({
+            processing: true,
+            //serverSide: true,
+            responsive: true,
+            deferRender: true,
+            //scrollX: true,
+            scrollCollapse: true,
+            //scrollY: '50vh',
+            data: <?= json_encode($movements) ?>,
+            columns: [
+                {
+                    data: 'moviment_date',
+                    className: 'text-center'
+                },
+                {
+                    data: 'stock_quantity',
+                    className: 'text-center'
+                },
+                {
+                    data: 'stock_in_out',
+                    className: 'text-center'
+                },
+                {
+                    data: 'stock_supplier',
+                    className: 'text-center'
+                },
+                {
+                    data: 'reason'
+                },
+            ],
+            order:[
+                [0, 'desc']  // sort by movements date in descending order
+            ],
+            language: {
+                decimal: "",
+                emptyTable: "Sem dados disponíveis na tabela.",
+                info: "Mostrando _START_ até _END_ de _TOTAL_ registos",
+                infoEmpty: "Mostrando 0 até 0 de 0 registos",
+                infoFiltered: "(Filtrando _MAX_ total de registos)",
+                infoPostFix: "",
+                thousands: ",",
+                lengthMenu: "Mostrando _MENU_ registos por página.",
+                loadingRecords: "Carregando...",
+                processing: "Processando...",
+                search: "Filtrar:",
+                zeroRecords: "Nenhum registro encontrado.",
+                paginate: {
+                    first: "Primeira",
+                    last: "Última",
+                    next: "Seguinte",
+                    previous: "Anterior"
+                },
+                aria: {
+                    sortAscending: ": ative para classificar a coluna em ordem crescente.",
+                    sortDescending: ": ative para classificar a coluna em ordem decrescente."
+                }
+            }
+
+        });
+    });
+</script>
 
 <?= $this->endSection() ?>

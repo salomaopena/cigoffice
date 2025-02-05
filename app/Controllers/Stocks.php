@@ -180,14 +180,12 @@ class Stocks extends BaseController
 
         //load movement for the product limited to 10000 records
 
-        $movements = $this->_get_stock_movements($id);
-
         $data = [
             'title' => 'Entradas e Saídas',
             'page' => 'Entradas e Saídas',
             'product' => $product, //get product data
             'datatables' => true,
-            //'movements' => $movements,
+            'movements' => $this->_get_stock_movements($id)
         ];
 
         return view('/dashboard/stocks/movements', $data);

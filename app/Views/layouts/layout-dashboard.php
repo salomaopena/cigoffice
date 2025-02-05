@@ -17,6 +17,7 @@
 
     <?php if (!empty($datatables)) : ?>
         <link rel="stylesheet" href="<?= base_url('assets/datatable/datatables.min.css') ?>">
+        <script src="<?= base_url('assets/datatable/jquery/jquery.min.js') ?>"></script>
     <?php endif; ?>
 
     <!-- Fontawesome-->
