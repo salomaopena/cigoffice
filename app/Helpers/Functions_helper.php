@@ -22,26 +22,38 @@ function calculate_promotion($price, $discount)
     return round($price - ($price * $discount) / 100, 2);
 }
 
-function normalize_price($price){
+function normalize_price($price)
+{
     return number_format($price, 2, ',', '.');
 }
 
 
-function prefixed_product_file_name($file_name){
+function prefixed_product_file_name($file_name)
+{
     //create a prefix file name
-    $prefix = 'rest_'.str_pad(session()->user['id_restaurant'],5,'0',STR_PAD_LEFT);
+    $prefix = 'rest_' . str_pad(session()->user['id_restaurant'], 5, '0', STR_PAD_LEFT);
     //rest_00001_2025012201_image.png
-    return $prefix.'_'.date('Ymd_His').'_'.$file_name;
+    return $prefix . '_' . date('Ymd_His') . '_' . $file_name;
 }
 
-function print_data($data,$die = true){
-   echo('<pre>');
-   echo(str_repeat('-',40).'<br>');
-   echo print_r($data,true);
-   echo('<br>');
-   echo(str_repeat('-',40).'<br>');
-   echo('</pre>');
-   if($die){
-       die(1);
-   }
+function stock_movements_selecte_filter($filter, $option)
+{
+    if ($filter == $option) {
+        return 'selected';
+    } else {
+        return '';
+    }
+}
+
+function print_data($data, $die = true)
+{
+    echo ('<pre>');
+    echo (str_repeat('-', 40) . '<br>');
+    echo print_r($data, true);
+    echo ('<br>');
+    echo (str_repeat('-', 40) . '<br>');
+    echo ('</pre>');
+    if ($die) {
+        die(1);
+    }
 }

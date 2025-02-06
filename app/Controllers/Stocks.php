@@ -198,6 +198,46 @@ class Stocks extends BaseController
     }
 
 
+    public function exportCSV($enc_id){
+        $id_product = Decrypt($enc_id);
+
+        if (empty($id_product)) {
+            return redirect()->to(site_url('/stocks'));
+        }
+
+        //get stocks movements for this products and export to csv
+
+        $stock_model = new StockModel();
+        $movements = $stock_model
+            ->where('id_product', $id_product)
+            ->orderBy('moviment_date', 'DESC')
+            ->findAll();
+
+        //download csv file with stock moviments data
+
+        $this->response->setHeader('Content-Type', 'text/csv; charset=utf-8');
+        $this->response->setHeader('Content-Disposition', 'attachment; filename=movements.csv');
+
+        $output = fopen('php://output', 'w');
+
+        //header
+        fputcsv($output, ['Data do movimento','Quantidade', 'Operação','Fornecedor','Observações']);
+
+        //body and data
+
+        foreach ($movements as $movement) {
+            fputcsv($output,[
+                $movement->moviment_date,
+                $movement->stock_quantity,
+                $movement->stock_in_out,
+                $movement->stock_supplier,
+                $movement->reason
+            ]);
+        }
+        fclose($output);
+    }
+
+
     private function _get_stock_movements($id_product, $filter)
     {
         //load movement for the product limited to 10000 records

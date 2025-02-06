@@ -51,19 +51,25 @@
                     <div class="col-auto d-flex align-items-center">
                         <i class="fa-solid fa-filter me-2"></i>
                         <select name="fiter_select" id="filter_select" class="form-select">
-                            <option value="<?= Encrypt('') ?>">Todos os movimentos</option>
-                            <option value="<?= Encrypt('IN') ?>">Entradas</option>
-                            <option value="<?= Encrypt('OUT') ?>">Saídas</option>
+                            <option value="<?= Encrypt('') ?>" <?=stock_movements_selecte_filter($filter,'')?>>Todos os movimentos</option>
+                            <option value="<?= Encrypt('IN') ?>" <?=stock_movements_selecte_filter($filter,'IN')?>>Entradas</option>
+                            <option value="<?= Encrypt('OUT') ?>" <?=stock_movements_selecte_filter($filter,'OUT')?>>Saídas</option>
                             <optgroup label="Fornecedores">
                                 <?php foreach ($stock_suppliers as $supplier) : ?>
-                                    <option value="<?= Encrypt('stksup_' . $supplier->stock_supplier) ?>"><?= $supplier->stock_supplier ?></option>
+                                    <option value="<?= Encrypt('stksup_' . $supplier->stock_supplier) ?>" <?=stock_movements_selecte_filter($filter,'stksup_'.$supplier->stock_supplier)?>><?= $supplier->stock_supplier ?></option>
                                 <?php endforeach; ?>
                             </optgroup>
                         </select>
                     </div>
+
+                    <div class="col text-end">
+                        <a href="<?=site_url('stocks/export_csv/'.Encrypt($product->id))?>" class="btn btn-sm btn-outline-secondary px-3 m-1"><i class="fa-solid fa-download me-2"></i>Exportar para CSV</a>
+                    </div>
                 </div>
 
             </div>
+
+
 
             <table class="table table-striped table-bordered" id="datatable">
                 <thead class="table-dark">
