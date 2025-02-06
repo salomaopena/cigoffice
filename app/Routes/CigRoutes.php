@@ -38,4 +38,5 @@ $routes->get('/stocks/remove/(:alphanum)', 'Stocks::remove/$1');
 $routes->post('/stocks/remove/submit', 'Stocks::submitRemoveStock');
 $routes->get('/stocks/moviments/(:alphanum)', 'Stocks::moviments/$1');
 $routes->get('/stocks/moviments/(:alphanum)/(:alphanum)', 'Stocks::moviments/$1/$2');
+$routes->get('/stocks/export_csv/(:alphanum)', 'Stocks::exportCSV/$1');
 
