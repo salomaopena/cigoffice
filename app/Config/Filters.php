@@ -13,6 +13,7 @@ use CodeIgniter\Filters\PageCache;
 use CodeIgniter\Filters\PerformanceMetrics;
 use CodeIgniter\Filters\SecureHeaders;
 use App\Filters\UserIsLogIn;
+use App\Filters\ApiAuth;
 
 class Filters extends BaseFilters
 {
@@ -35,7 +36,8 @@ class Filters extends BaseFilters
         'forcehttps'    => ForceHTTPS::class,
         'pagecache'     => PageCache::class,
         'performance'   => PerformanceMetrics::class,
-        'userislogin'   => UserIsLogIn::class
+        'userislogin'   => UserIsLogIn::class,
+        'apiauth'       => ApiAuth::class,
     ];
 
     /**
@@ -76,6 +78,8 @@ class Filters extends BaseFilters
                     '/auth/login',
                     '/auth/logout',
                     '/auth/login-submit',
+                    '/api/*',
+                    '/credencials/*',
                 ]
             ],
             // 'honeypot',
@@ -112,5 +116,11 @@ class Filters extends BaseFilters
      *
      * @var array<string, array<string, list<string>>>
      */
-    public array $filters = [];
+    public array $filters = [
+        'apiauth' => [
+            'before' => [
+                'api/*',
+            ]
+        ]
+    ];
 }

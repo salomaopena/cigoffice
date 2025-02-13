@@ -84,16 +84,6 @@
             email: 'user2@email.com',
             password: 'user2',
             restaurant: 2,
-        },
-        {
-            email: 'admin3@email.com',
-            password: 'admin3',
-            restaurant: 3,
-        },
-        {
-            email: 'user3@email.com',
-            password: 'user3',
-            restaurant: 3,
         }
         
     ];
