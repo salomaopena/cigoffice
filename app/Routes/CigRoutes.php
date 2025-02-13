@@ -1,9 +1,12 @@
 <?php
 
+//define the namespace
 namespace App\Routes;
 
+//load the necessary service
 use Config\Services;
 
+//set the routes collections
 $routes = Services::routes();
 
 

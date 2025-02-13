@@ -112,3 +112,16 @@ define('DB_PASS',      'GsCl23!G8/9)Y3UK');
 //encrypt
 define('ENCRYPTION_KEY', '!FXcuT9swzrx4n<]/+GIz#KLkGyw_9fb#4@"+o;hPHQwaX1$1OwQlsYAu28X+DT(');
 
+
+define('API_ACTIVE',        true);
+define('API_VERSION',       '1.0.0');
+define('API_NAME',          'CIGBurguer');
+define('API_AUTHOR',        'Salomão Pena');
+define('API_LICENSE',       'MIT');
+define('API_DOCUMENTATION', 'https://api.example.com/docs');
+define('API_CONTACT',        'contact@example.com');
+
+// http basic auth credentials
+//define('API_USERNAME',      'ci_api_user');
+//define('API_PASSWORD',      'huCLJ2fgqhFP7C2uh8mZdFul1Lh2MvLZ');
+
