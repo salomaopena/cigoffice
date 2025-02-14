@@ -45,23 +45,30 @@ class Api extends BaseController
         $credencials = json_decode($encripter->decrypt(hex2bin($header)), true);
         return $credencials['project_id'];
     }
+
+    //========================================================================================//
+    //                                  API ENDPOINTS                                         //
+    //========================================================================================//
     public function api_status()
     {
         $response = new ApiResponse();
         $response->validade_request('GET');
-        $api = new ApiModel($this->_get_project_id());
-        $results = $api->get_restaurant_details();
-        return $response->set_response(200,'success',$results);
-        //return $response->set_response();
+        return $response->set_response(200,'success',[],$this->_get_project_id());
     }
 
-    public function restaurant_details($project_id){
-        $this->load->model('ApiModel');
-        $restaurant_details = $this->ApiModel->get_restaurant_details($project_id);
+
+    public function restaurant_details(){
+        response()->setContentType('application/json');
         $response = new ApiResponse();
-        if(empty($restaurant_details)){
-            return $response->set_response_error(404, 'Restaurant not found');
-        }
-        return $response->set_response($restaurant_details);
+        $response->validade_request('GET');
+        $api= new ApiModel($this->_get_project_id());
+        
+        $data = $api->get_restaurant_details();
+        return $response->set_response(
+            200,
+            'Success',
+            $data,
+            $this->_get_project_id()
+        );
     }
 }
