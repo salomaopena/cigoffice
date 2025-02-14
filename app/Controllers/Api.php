@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Controllers\BaseController;
 use App\Libraries\ApiResponse;
+use App\Models\ApiModel;
 use CodeIgniter\HTTP\ResponseInterface;
 
 class Api extends BaseController
@@ -36,10 +37,38 @@ class Api extends BaseController
         echo $encrypted_key;
 
     }
+
+
+    private function _get_project_id(){
+        $header = $this->request->getHeaderLine('X-API-CREDENCIALS');
+        $encripter = \Config\Services::encrypter();
+        $credencials = json_decode($encripter->decrypt(hex2bin($header)), true);
+        return $credencials['project_id'];
+    }
+
+    //========================================================================================//
+    //                                  API ENDPOINTS                                         //
+    //========================================================================================//
     public function api_status()
     {
         $response = new ApiResponse();
         $response->validade_request('GET');
-        return $response->set_response();
+        return $response->set_response(200,'success',[],$this->_get_project_id());
+    }
+
+
+    public function restaurant_details(){
+        response()->setContentType('application/json');
+        $response = new ApiResponse();
+        $response->validade_request('GET');
+        $api= new ApiModel($this->_get_project_id());
+        
+        $data = $api->get_restaurant_details();
+        return $response->set_response(
+            200,
+            'Success',
+            $data,
+            $this->_get_project_id()
+        );
     }
 }

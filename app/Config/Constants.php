@@ -125,3 +125,5 @@ define('API_CONTACT',        'contact@example.com');
 //define('API_USERNAME',      'ci_api_user');
 //define('API_PASSWORD',      'huCLJ2fgqhFP7C2uh8mZdFul1Lh2MvLZ');
 
+define('API_DEBUG_LEVEL',     1); // 0 = Don't send error | 1 send error
+

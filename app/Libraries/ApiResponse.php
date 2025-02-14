@@ -25,10 +25,10 @@ class ApiResponse
         }
     }
 
-    public function set_response($status = 200, $message = 'success', $data = [])
+    public function set_response($status = 200, $message = 'success', $data = [], $project_id = null)
     {
         //api generic success
-        header('Content-Type: application/json');
+        response()->setContentType('application/json');
         http_response_code($status);
         return json_encode([
             'status'    => $status,
@@ -42,15 +42,16 @@ class ApiResponse
                 'author'        => API_AUTHOR,
                 'datetime'      => date('Y-m-d H:i:s'),
                 'timestamp'     => time(),
+                'project_id'    => $project_id,
             ],
             'data'      => $data
         ], JSON_PRETTY_PRINT);
     }
 
-    public function set_response_error($status = 404, $message = 'error')
+    public function set_response_error($status = 404, $message = 'error', $project_id = null)
     {
         //api generic error
-        header('Content-Type: application/json');
+        response()->setContentType('application/json');
         http_response_code($status);
         return json_encode([
             'status'    => $status,
@@ -64,6 +65,7 @@ class ApiResponse
                 'author'        => API_AUTHOR,
                 'datetime'      => date('Y-m-d H:i:s'),
                 'timestamp'     => time(),
+                'project_id'    => $project_id,
             ],
             'data'              => [],
         ], JSON_PRETTY_PRINT);
@@ -71,6 +73,7 @@ class ApiResponse
 
     private function _api_not_active()
     {
+        response()->setContentType('application/json');
         return json_encode([
             'status'    => 403,
             'message'   => 'API is not active...',
@@ -83,6 +86,7 @@ class ApiResponse
                 'author'        => API_AUTHOR,
                 'datetime'      => date('Y-m-d H:i:s'),
                 'timestamp'     => time(),
+                'project_id'    => null,
             ],
             'data'              => [],
         ], JSON_PRETTY_PRINT);
