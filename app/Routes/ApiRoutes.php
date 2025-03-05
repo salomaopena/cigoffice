@@ -12,9 +12,11 @@ use Config\Services;
 $routes = Services::routes();
 
 // api routes
-$routes->get('/api/status/', 'Api::api_status');
+$routes->get('/api/status/',            'Api::api_status');
 $routes->get('/credencials/(:alphanum)/(:alphanum)', 'Api::create_api_credentials/$1/$2');
-$routes->get('/api/restaurant/', 'Api::restaurant_details');
+$routes->get('/api/restaurant/',        'Api::restaurant_details');
+$routes->post('/api/checkout/',          'Api::checkout');
+$routes->post('/api/final_confirmation/',          'Api::final_confirmation');
 
 //api route does not exist
 $routes->set404Override(function(){
