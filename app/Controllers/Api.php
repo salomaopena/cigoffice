@@ -198,28 +198,40 @@ class Api extends BaseController
         $data = $this->request->getJSON(true);
 
         //validate final confirmation data
+        //colect data from request
 
-        $file_path = WRITEPATH.'cache/final_confirmation.json';
-        $data_json = json_encode($data,JSON_PRETTY_PRINT);
-        file_put_contents($file_path, $data_json);
-        // $analisys = $this->_analyse_final_confirmation_data($data);
+        // $file_path = WRITEPATH.'cache/final_confirmation.json';
+        // $data_json = json_encode($data,JSON_PRETTY_PRINT);
 
-        // if ($analisys['status'] =='error') {
-        //     return $response->set_response_error(
-        //         400, 
-        //         $analisys['message'],
-        //         [],
-        //         $this->_get_project_id()
-        //     );
-        // }
+        // file_put_contents($file_path, $data_json);
 
-        // //if analysis is successfuly
+        $id_restaurant = $data['id_restaurant'];
+        $machine_id = $data['machine_id'];
+        $total_price = $data['total_price'];
+        $order_items = $data['order']['items'];
+        $status = $data['order']['status'];
 
-        // return $response->set_response(
-        //     200,
-        //     'Success',
-        //     $data,
-        //     $this->_get_project_id()
-        // );
+        //add order to database and get id (order id)
+        $api_model = new ApiModel($this->_get_project_id());
+        $results_order = $api_model->add_order($id_restaurant,$machine_id,$total_price,$status);
+
+        //on error
+        if($results_order['status'] == 'error'){
+            return $response->set_response_error(400, $results_order['message'], [], $this->_get_project_id());
+        }
+
+        //on success
+        $order_id = $results_order['id_order'];
+
+        //add order items to database
+        $results_order_items = $api_model->add_order_items($order_id, $order_items);
+
+        //on error
+        if($results_order_items['status'] == 'error'){
+            return $response->set_response_error(400, $results_order_items['message'], [], $this->_get_project_id());
+        }
+
+        //if everything is ok
+        return $response->set_response(200, 'success', ['id_order'=>$order_id], $this->_get_project_id());
     }
 }
