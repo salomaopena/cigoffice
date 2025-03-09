@@ -68,7 +68,7 @@ class Api extends BaseController
         $data = $api->get_restaurant_details();
         return $response->set_response(
             200,
-            'Success',
+            'success',
             $data,
             $this->_get_project_id()
         );
@@ -198,28 +198,70 @@ class Api extends BaseController
         $data = $this->request->getJSON(true);
 
         //validate final confirmation data
+        //colect data from request
 
-        $file_path = WRITEPATH.'cache/final_confirmation.json';
-        $data_json = json_encode($data,JSON_PRETTY_PRINT);
-        file_put_contents($file_path, $data_json);
-        // $analisys = $this->_analyse_final_confirmation_data($data);
+        // $file_path = WRITEPATH.'cache/final_confirmation.json';
+        // $data_json = json_encode($data,JSON_PRETTY_PRINT);
 
-        // if ($analisys['status'] =='error') {
-        //     return $response->set_response_error(
-        //         400, 
-        //         $analisys['message'],
-        //         [],
-        //         $this->_get_project_id()
-        //     );
-        // }
+        // file_put_contents($file_path, $data_json);
 
-        // //if analysis is successfuly
+        $id_restaurant = $data['id_restaurant'];
+        $machine_id = $data['machine_id'];
+        $total_price = $data['total_price'];
+        $order_items = $data['order']['items'];
+        $status = $data['order']['status'];
 
-        // return $response->set_response(
-        //     200,
-        //     'Success',
-        //     $data,
-        //     $this->_get_project_id()
-        // );
+        $api_model = new ApiModel($this->_get_project_id());
+        
+        //get the last number from the active restaurant
+        
+        $last_order_number = $api_model->get_last_order_number($id_restaurant);
+        $last_order_number++;
+        
+        //add order to database and get id (order id)
+        $results_order = $api_model->add_order($id_restaurant,$machine_id,$total_price,$status, $last_order_number);
+
+        //on error
+        if($results_order['status'] == 'error'){
+            return $response->set_response_error(400, $results_order['message'], [], $this->_get_project_id());
+        }
+
+        //on success
+        $order_id = $results_order['id_order'];
+
+        //add order items to database
+        $results_order_items = $api_model->add_order_items($order_id, $order_items);
+
+        //on error
+        if($results_order_items['status'] == 'error'){
+            return $response->set_response_error(400, $results_order_items['message'], [], $this->_get_project_id());
+        }
+
+        //if everything is ok
+        return $response->set_response(200, 'success', ['id_order'=>$order_id], $this->_get_project_id());
+    }
+
+
+    /*
+    =================================================================
+    KITCHEN ROUTES
+    =================================================================
+    */
+    public function get_pending_orders(){
+        response()->setContentType('application/json');
+        $response = new ApiResponse();
+        $response->validade_request('GET');
+
+        $api_model = new ApiModel($this->_get_project_id());
+        $results = $api_model->get_pending_orders();
+
+
+        //on error
+        if($results['status'] == 'error'){
+            return $response->set_response_error(400, $results['message'], [], $this->_get_project_id());
+        }
+
+        //on success
+        return $response->set_response(200, 'success', $results['data'], $this->_get_project_id());
     }
 }
