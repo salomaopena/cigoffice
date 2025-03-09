@@ -179,14 +179,13 @@ class ApiModel extends Model
             WHERE id_restaurant = :id_restaurant: 
             ORDER BY order_number DESC LIMIT 1 ", $params)->getResult();
 
-
             if ($query) {
                 $db->transCommit();
-                if (count($results) == 0) {
+                if (count($query) == 0) {
                     return 0;
                 } else {
                     //return $results[0]->last_order_number + 1;
-                    return $results[0]-> order_number;
+                    return $query[0]-> order_number;
                 }
             } else {
                 $db->transRollback();
@@ -204,7 +203,7 @@ class ApiModel extends Model
         }
     }
 
-    public function add_order($id_restaurant, $machine_id, $total_price, $status, $last_order_number)
+    public function add_order($id_restaurant, $machine_id, $total_price, $status, $order_number)
     {
         //add order to database and get id (order id)
         try {
@@ -217,7 +216,7 @@ class ApiModel extends Model
                 'order_date' => date('Y-m-d H:s:i'),
                 'order_status' => $status,
                 'total_price' => $total_price,
-                'order_number' => $last_order_number,
+                'order_number' => $order_number,
                 'created_at' => date('Y-m-d H:i:s'),
             ];
 
@@ -229,7 +228,7 @@ class ApiModel extends Model
                 $db->transCommit();
                 return [
                     'id_order' => $order_id,
-                    'order_number' => $last_order_number,
+                    'order_number' => $order_number,
                     'status' => 'success',
                     'message' => 'Order added successfully.'
                 ];
