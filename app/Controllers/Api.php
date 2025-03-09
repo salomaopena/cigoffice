@@ -68,7 +68,7 @@ class Api extends BaseController
         $data = $api->get_restaurant_details();
         return $response->set_response(
             200,
-            'Success',
+            'success',
             $data,
             $this->_get_project_id()
         );
@@ -211,9 +211,15 @@ class Api extends BaseController
         $order_items = $data['order']['items'];
         $status = $data['order']['status'];
 
-        //add order to database and get id (order id)
         $api_model = new ApiModel($this->_get_project_id());
-        $results_order = $api_model->add_order($id_restaurant,$machine_id,$total_price,$status);
+        
+        //get the last number from the active restaurant
+        
+        $last_order_number = $api_model->get_last_order_number($id_restaurant);
+        $last_order_number++;
+        
+        //add order to database and get id (order id)
+        $results_order = $api_model->add_order($id_restaurant,$machine_id,$total_price,$status, $last_order_number);
 
         //on error
         if($results_order['status'] == 'error'){
@@ -233,5 +239,29 @@ class Api extends BaseController
 
         //if everything is ok
         return $response->set_response(200, 'success', ['id_order'=>$order_id], $this->_get_project_id());
+    }
+
+
+    /*
+    =================================================================
+    KITCHEN ROUTES
+    =================================================================
+    */
+    public function get_pending_orders(){
+        response()->setContentType('application/json');
+        $response = new ApiResponse();
+        $response->validade_request('GET');
+
+        $api_model = new ApiModel($this->_get_project_id());
+        $results = $api_model->get_pending_orders();
+
+
+        //on error
+        if($results['status'] == 'error'){
+            return $response->set_response_error(400, $results['message'], [], $this->_get_project_id());
+        }
+
+        //on success
+        return $response->set_response(200, 'success', $results['data'], $this->_get_project_id());
     }
 }

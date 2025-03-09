@@ -42,6 +42,7 @@ class ApiModel extends Model
 
             //get products categories
             $results = $db->query("SELECT DISTINCT (p.category) category FROM products p JOIN restaurants r ON p.id_restaurant = r.id WHERE r.project_id = :project_id: AND p.deleted_at IS NULL ", $params);
+
             $data['products_categories'] = $results->getResult();
 
             //get popular products
@@ -162,7 +163,48 @@ class ApiModel extends Model
         }
     }
 
-    public function add_order($id_restaurant, $machine_id, $total_price, $status)
+
+    public function get_last_order_number($id_restaurant)
+    {
+        try {
+            $db = Database::connect();
+            $db->transStart();
+
+            $params = ['id_restaurant' => $id_restaurant];
+
+            $results = $db->query("SELECT MAX(order_number) as last_order_number FROM orders WHERE id_restaurant = :id_restaurant:", $params)->getResult();
+
+
+            $query = $db->query("SELECT order_number FROM orders
+            WHERE id_restaurant = :id_restaurant: 
+            ORDER BY order_number DESC LIMIT 1 ", $params)->getResult();
+
+
+            if ($query) {
+                $db->transCommit();
+                if (count($results) == 0) {
+                    return 0;
+                } else {
+                    //return $results[0]->last_order_number + 1;
+                    return $results[0]-> order_number;
+                }
+            } else {
+                $db->transRollback();
+                return [
+                    'id_order' => null,
+                    'status' => 'error',
+                    'message' => 'Error adding order.'
+                ];
+            }
+        } catch (\CodeIgniter\Database\Exceptions\DatabaseException $ex) {
+            return [
+                'status' => 'error',
+                'message' => $ex->getMessage()
+            ];
+        }
+    }
+
+    public function add_order($id_restaurant, $machine_id, $total_price, $status, $last_order_number)
     {
         //add order to database and get id (order id)
         try {
@@ -175,6 +217,7 @@ class ApiModel extends Model
                 'order_date' => date('Y-m-d H:s:i'),
                 'order_status' => $status,
                 'total_price' => $total_price,
+                'order_number' => $last_order_number,
                 'created_at' => date('Y-m-d H:i:s'),
             ];
 
@@ -186,7 +229,8 @@ class ApiModel extends Model
                 $db->transCommit();
                 return [
                     'id_order' => $order_id,
-                    'status' => 'Success',
+                    'order_number' => $last_order_number,
+                    'status' => 'success',
                     'message' => 'Order added successfully.'
                 ];
             } else {
@@ -229,7 +273,7 @@ class ApiModel extends Model
             if ($query) {
                 $db->transCommit();
                 return [
-                    'status' => 'Success',
+                    'status' => 'success',
                     'message' => 'Order Items added successfully.'
                 ];
             } else {
@@ -237,6 +281,57 @@ class ApiModel extends Model
                 return [
                     'status' => 'error',
                     'message' => 'Error adding order items.'
+                ];
+            }
+        } catch (\CodeIgniter\Database\Exceptions\DatabaseException $ex) {
+            return [
+                'status' => 'error',
+                'message' => $ex->getMessage()
+            ];
+        }
+    }
+
+    //========================================================
+    //
+    // Get pending orders from database to KITCHEN APP
+    //
+    //========================================================
+
+    public function get_pending_orders()
+    {
+        //retriview data order items to database
+        try {
+            $db = Database::connect();
+            $db->transStart();
+
+            $params = ['project_id' => $this->project_id];
+
+
+            $results = $db->query("SELECT orders.*,
+            SUM(order_products.quantity) AS total_items
+            FROM orders JOIN restaurants  
+            ON orders.id_restaurant = restaurants.id
+            JOIN order_products ON orders.id = order_products.id_order
+            WHERE orders.order_status = 'paid' 
+            AND restaurants.project_id = :project_id:
+            AND orders.deleted_at IS NULL
+            AND order_products.deleted_at IS NULL
+            GROUP BY orders.id", $params)->getResult();
+
+
+
+            if ($results) {
+                $db->transCommit();
+                return [
+                    'status' => 'success',
+                    'message' => 'Order retrivied successfuly',
+                    'data' => $results
+                ];
+            } else {
+                $db->transRollback();
+                return [
+                    'status' => 'error',
+                    'message' => 'Error retrivied order items.'
                 ];
             }
         } catch (\CodeIgniter\Database\Exceptions\DatabaseException $ex) {

@@ -17,6 +17,7 @@ $routes->get('/credencials/(:alphanum)/(:alphanum)', 'Api::create_api_credential
 $routes->get('/api/restaurant/',        'Api::restaurant_details');
 $routes->post('/api/checkout/',          'Api::checkout');
 $routes->post('/api/final_confirmation/',          'Api::final_confirmation');
+$routes->get('/api/get_pending_orders', 'Api::get_pending_orders');
 
 //api route does not exist
 $routes->set404Override(function(){
