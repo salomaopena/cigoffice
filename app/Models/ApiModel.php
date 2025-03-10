@@ -168,33 +168,20 @@ class ApiModel extends Model
     {
         try {
             $db = Database::connect();
-            $db->transStart();
 
             $params = ['id_restaurant' => $id_restaurant];
 
-            $results = $db->query("SELECT MAX(order_number) as last_order_number FROM orders WHERE id_restaurant = :id_restaurant:", $params)->getResult();
-
-
-            $query = $db->query("SELECT order_number FROM orders
+            $results = $db->query("SELECT order_number FROM orders
             WHERE id_restaurant = :id_restaurant: 
             ORDER BY order_number DESC LIMIT 1 ", $params)->getResult();
 
-            if ($query) {
-                $db->transCommit();
-                if (count($query) == 0) {
-                    return 0;
-                } else {
-                    //return $results[0]->last_order_number + 1;
-                    return $query[0]-> order_number;
-                }
+
+            if (count($results) == 0) {
+                return 0;
             } else {
-                $db->transRollback();
-                return [
-                    'id_order' => null,
-                    'status' => 'error',
-                    'message' => 'Error adding order.'
-                ];
+                return $results[0]->order_number;
             }
+
         } catch (\CodeIgniter\Database\Exceptions\DatabaseException $ex) {
             return [
                 'status' => 'error',
@@ -228,7 +215,6 @@ class ApiModel extends Model
                 $db->transCommit();
                 return [
                     'id_order' => $order_id,
-                    'order_number' => $order_number,
                     'status' => 'success',
                     'message' => 'Order added successfully.'
                 ];
