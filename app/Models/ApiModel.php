@@ -326,4 +326,76 @@ class ApiModel extends Model
             ];
         }
     }
+
+
+    public function get_order_details($order_id){
+        //retriview data order items to database
+        try {
+            $db = Database::connect();
+            $db->transStart();
+
+            $params = ['id_order' => $order_id];
+
+            $results = $db->query("SELECT orders.*,
+            SUM(order_products.quantity) AS total_items
+            FROM orders JOIN order_products 
+            ON orders.id = order_products.id_order
+            WHERE id_order = :id_order:
+            AND orders.deleted_at IS NULL", $params)->getResult();
+
+            if ($results) {
+                $db->transCommit();
+                return [
+                    'status' => 'success',
+                    'message' => 'Order details retrivied successfuly',
+                    'data' => $results
+                ];
+            } else {
+                $db->transRollback();
+                return [
+                    'status' => 'error',
+                    'message' => 'Error retrivied order details.'
+                ];
+            }
+        } catch (\CodeIgniter\Database\Exceptions\DatabaseException $ex) {
+            return [
+                'status' => 'error',
+                'message' => $ex->getMessage()
+            ];
+        }
+
+    }
+        public function delete_order($order_id)
+        {
+            //delete order from database
+            try {
+                $db = Database::connect();
+                $db->transStart();
+
+                $params = ['id_order' => $order_id];
+
+                $query = $db->query("UPDATE orders SET deleted_at = NOW(),
+                order_status = 'cancelled' WHERE id = :id_order:", $params);
+
+                if ($query) {
+                    $db->transCommit();
+                    return [
+                        'status' => 'success',
+                        'message' => 'Order deleted successfully.'
+                    ];
+                } else {
+                    $db->transRollback();
+                    return [
+                        'status' => 'error',
+                        'message' => 'Error deleting order.'
+                    ];
+                }
+            } catch (\CodeIgniter\Database\Exceptions\DatabaseException $ex) {
+                return [
+                    'status' => 'error',
+                    'message' => $ex->getMessage()
+                ];
+            }
+        }
+    
 }

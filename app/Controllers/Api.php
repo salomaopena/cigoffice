@@ -265,4 +265,60 @@ class Api extends BaseController
         //on success
         return $response->set_response(200, 'success', $results['data'], $this->_get_project_id());
     }
+
+
+    
+    public function get_order_details()
+    {
+        response()->setContentType('application/json');
+        $response = new ApiResponse();
+        $response->validade_request('POST');
+
+        
+        $api_model = new ApiModel($this->_get_project_id());
+
+        $data = $this->request->getJSON(true);
+
+        if(empty($data)){
+            return $response->set_response_error(400, 'Invalid parameter', [], $this->_get_project_id());
+        }
+
+        $results = $api_model->get_order_details($data['id']);    
+
+        //on error
+        if ($results['status'] == 'error') {
+            return $response->set_response_error(400, $results['message'], [], $this->_get_project_id());
+        }
+
+        //on success
+        return $response->set_response(200, 'success', $results['data'], $this->_get_project_id());
+    }
+
+
+    public function delete_order()
+    {
+        response()->setContentType('application/json');
+        $response = new ApiResponse();
+        $response->validade_request('POST');
+
+        $api_model = new ApiModel($this->_get_project_id());
+
+        $data = $this->request->getJSON(true);
+
+        if(empty($data)){
+            return $response->set_response_error(400, 'Invalid parameter', [], $this->_get_project_id());
+        }
+
+        $results = $api_model->delete_order($data['id']);
+
+        //on error
+        if ($results['status'] == 'error') {
+            return $response->set_response_error(400, $results['message'], [], $this->_get_project_id());
+        }
+
+        //on success
+        return $response->set_response(200, 'success', [], $this->_get_project_id());
+    }
+
+
 }

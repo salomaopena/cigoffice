@@ -43,3 +43,6 @@ $routes->get('/stocks/moviments/(:alphanum)', 'Stocks::moviments/$1');
 $routes->get('/stocks/moviments/(:alphanum)/(:alphanum)', 'Stocks::moviments/$1/$2');
 $routes->get('/stocks/export_csv/(:alphanum)', 'Stocks::exportCSV/$1');
 
+
+//users management
+$routes->get('/users_management', 'UsersManagement::index');
