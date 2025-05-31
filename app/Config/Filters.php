@@ -78,6 +78,10 @@ class Filters extends BaseFilters
                     '/auth/login',
                     '/auth/logout',
                     '/auth/login-submit',
+                    '/auth/finish_registration/*',
+                    '/auth/define_password',
+                    '/auth/define_password_submit',
+                    '/auth/welcome',
                     '/api/*',
                     '/credencials/*',
                 ]

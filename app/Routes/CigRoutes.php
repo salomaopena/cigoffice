@@ -19,6 +19,13 @@ $routes->get('/auth/login', 'Auth::login');
 $routes->post('/auth/login-submit', 'Auth::login_submit');
 $routes->get('/auth/logout', 'Auth::logout');
 
+//finish registration
+$routes->get('/auth/finish_registration/(:alphanum)', 'Auth::finish_registration/$1');
+//define password
+$routes->get('/auth/define_password', 'Auth::define_password');
+$routes->post('/auth/define_password_submit', 'Auth::define_password_submit');
+$routes->get('/auth/welcome', 'Auth::welcome');
+
 //dashboard routes
 //products routes
 $routes->get('/products', 'Products::index');
@@ -45,4 +52,7 @@ $routes->get('/stocks/export_csv/(:alphanum)', 'Stocks::exportCSV/$1');
 
 
 //users management
+$routes->get('/users_management/new', 'UsersManagement::new');
+$routes->post('/users_management/submit', 'UsersManagement::submit');
 $routes->get('/users_management', 'UsersManagement::index');
+$routes->get('/users_management/edit/(:alphanum)', 'UsersManagement::edit/$1');

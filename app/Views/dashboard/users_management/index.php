@@ -2,6 +2,13 @@
 <?= $this->section('content') ?>
 <?= $this->include('partials/page_title') ?>
 
+
+<div class="mb-3">
+    <a href="<?= site_url('users_management/new') ?>" class="btn btn-outline-secondary">
+        <i class="fa-solid fa-user-plus"></i> Novo Usuário
+    </a>
+</div>
+
 <div class="container-fluid mb-5">
     <div class="row">
         <div class="col content-box p-4">
@@ -15,6 +22,7 @@
                     <table class="table table-striped table-hover table-bordered" id="table-users">
                         <thead class="table-dark">
                             <tr>
+                                <td>Restaurante</td>
                                 <th>Nome</th>
                                 <th>Email</th>
                                 <th>Telefone</th>
@@ -28,6 +36,7 @@
                         <tbody>
                             <?php foreach ($users as $user): ?>
                                 <tr>
+                                    <td><?= $user['restaurant_name'] ?></td>
                                     <td><?= $user['full_name'] ?></td>
                                     <td><?= $user['email'] ?></td>
                                     <td><?= $user['phone'] ?></td>
@@ -77,7 +86,21 @@
 
                                     <td><?= $user['last_login'] ?></td>
                                     <td><?= $user['created_at'] ?></td>
-                                    <td><?= 'Acoes' ?></td>
+                                    <td>
+
+                                        <?php if ($user['id'] == session()->user['id']): ?>
+                                            <span class="btn btn-sm btn-outline-seccondary opacity-50 disabled text-muted">
+                                                <i class="fa-regular fa-pen-to-square"></i>
+                                            </span>
+                                        <?php else: ?>
+
+                                            <a href="<?= site_url('/users_management/edit/') . Encrypt($user['id']) ?>" class="btn btn-sm btn-outline-primary">
+                                                <i class="fa-regular fa-pen-to-square"></i>
+                                            </a>
+
+                                        <?php endif; ?>
+
+                                    </td>
                                 </tr>
                             <?php endforeach; ?>
                         </tbody>
