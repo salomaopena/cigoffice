@@ -215,11 +215,12 @@ class Api extends BaseController
         
         //get the last number from the active restaurant
         
-        $last_order_number = $api_model->get_last_order_number($id_restaurant);
-        $last_order_number++;
+        $order_number = $api_model->get_last_order_number($id_restaurant);
+        $order_number++;
+
         
         //add order to database and get id (order id)
-        $results_order = $api_model->add_order($id_restaurant,$machine_id,$total_price,$status, $last_order_number);
+        $results_order = $api_model->add_order($id_restaurant,$machine_id,$total_price,$status, $order_number);
 
         //on error
         if($results_order['status'] == 'error'){
@@ -238,7 +239,7 @@ class Api extends BaseController
         }
 
         //if everything is ok
-        return $response->set_response(200, 'success', ['id_order'=>$order_id], $this->_get_project_id());
+        return $response->set_response(200, 'success', ['id_order'=>$order_id,'order_number'=>$order_number], $this->_get_project_id());
     }
 
 
@@ -264,4 +265,60 @@ class Api extends BaseController
         //on success
         return $response->set_response(200, 'success', $results['data'], $this->_get_project_id());
     }
+
+
+    
+    public function get_order_details()
+    {
+        response()->setContentType('application/json');
+        $response = new ApiResponse();
+        $response->validade_request('POST');
+
+        
+        $api_model = new ApiModel($this->_get_project_id());
+
+        $data = $this->request->getJSON(true);
+
+        if(empty($data)){
+            return $response->set_response_error(400, 'Invalid parameter', [], $this->_get_project_id());
+        }
+
+        $results = $api_model->get_order_details($data['id']);    
+
+        //on error
+        if ($results['status'] == 'error') {
+            return $response->set_response_error(400, $results['message'], [], $this->_get_project_id());
+        }
+
+        //on success
+        return $response->set_response(200, 'success', $results['data'], $this->_get_project_id());
+    }
+
+
+    public function delete_order()
+    {
+        response()->setContentType('application/json');
+        $response = new ApiResponse();
+        $response->validade_request('POST');
+
+        $api_model = new ApiModel($this->_get_project_id());
+
+        $data = $this->request->getJSON(true);
+
+        if(empty($data)){
+            return $response->set_response_error(400, 'Invalid parameter', [], $this->_get_project_id());
+        }
+
+        $results = $api_model->delete_order($data['id']);
+
+        //on error
+        if ($results['status'] == 'error') {
+            return $response->set_response_error(400, $results['message'], [], $this->_get_project_id());
+        }
+
+        //on success
+        return $response->set_response(200, 'success', [], $this->_get_project_id());
+    }
+
+
 }

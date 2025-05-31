@@ -19,6 +19,11 @@ $routes->post('/api/checkout/',          'Api::checkout');
 $routes->post('/api/final_confirmation/',          'Api::final_confirmation');
 $routes->get('/api/get_pending_orders', 'Api::get_pending_orders');
 
+// delete order
+$routes->post('/api/get_order_details/', 'Api::get_order_details');
+$routes->post('/api/delete_order/', 'Api::delete_order');
+
+
 //api route does not exist
 $routes->set404Override(function(){
     response()->setContentType('application/json');

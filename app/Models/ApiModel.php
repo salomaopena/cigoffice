@@ -168,34 +168,20 @@ class ApiModel extends Model
     {
         try {
             $db = Database::connect();
-            $db->transStart();
 
             $params = ['id_restaurant' => $id_restaurant];
 
-            $results = $db->query("SELECT MAX(order_number) as last_order_number FROM orders WHERE id_restaurant = :id_restaurant:", $params)->getResult();
-
-
-            $query = $db->query("SELECT order_number FROM orders
+            $results = $db->query("SELECT order_number FROM orders
             WHERE id_restaurant = :id_restaurant: 
             ORDER BY order_number DESC LIMIT 1 ", $params)->getResult();
 
 
-            if ($query) {
-                $db->transCommit();
-                if (count($results) == 0) {
-                    return 0;
-                } else {
-                    //return $results[0]->last_order_number + 1;
-                    return $results[0]-> order_number;
-                }
+            if (count($results) == 0) {
+                return 0;
             } else {
-                $db->transRollback();
-                return [
-                    'id_order' => null,
-                    'status' => 'error',
-                    'message' => 'Error adding order.'
-                ];
+                return $results[0]->order_number;
             }
+
         } catch (\CodeIgniter\Database\Exceptions\DatabaseException $ex) {
             return [
                 'status' => 'error',
@@ -204,7 +190,7 @@ class ApiModel extends Model
         }
     }
 
-    public function add_order($id_restaurant, $machine_id, $total_price, $status, $last_order_number)
+    public function add_order($id_restaurant, $machine_id, $total_price, $status, $order_number)
     {
         //add order to database and get id (order id)
         try {
@@ -217,7 +203,7 @@ class ApiModel extends Model
                 'order_date' => date('Y-m-d H:s:i'),
                 'order_status' => $status,
                 'total_price' => $total_price,
-                'order_number' => $last_order_number,
+                'order_number' => $order_number,
                 'created_at' => date('Y-m-d H:i:s'),
             ];
 
@@ -229,7 +215,6 @@ class ApiModel extends Model
                 $db->transCommit();
                 return [
                     'id_order' => $order_id,
-                    'order_number' => $last_order_number,
                     'status' => 'success',
                     'message' => 'Order added successfully.'
                 ];
@@ -341,4 +326,76 @@ class ApiModel extends Model
             ];
         }
     }
+
+
+    public function get_order_details($order_id){
+        //retriview data order items to database
+        try {
+            $db = Database::connect();
+            $db->transStart();
+
+            $params = ['id_order' => $order_id];
+
+            $results = $db->query("SELECT orders.*,
+            SUM(order_products.quantity) AS total_items
+            FROM orders JOIN order_products 
+            ON orders.id = order_products.id_order
+            WHERE id_order = :id_order:
+            AND orders.deleted_at IS NULL", $params)->getResult();
+
+            if ($results) {
+                $db->transCommit();
+                return [
+                    'status' => 'success',
+                    'message' => 'Order details retrivied successfuly',
+                    'data' => $results
+                ];
+            } else {
+                $db->transRollback();
+                return [
+                    'status' => 'error',
+                    'message' => 'Error retrivied order details.'
+                ];
+            }
+        } catch (\CodeIgniter\Database\Exceptions\DatabaseException $ex) {
+            return [
+                'status' => 'error',
+                'message' => $ex->getMessage()
+            ];
+        }
+
+    }
+        public function delete_order($order_id)
+        {
+            //delete order from database
+            try {
+                $db = Database::connect();
+                $db->transStart();
+
+                $params = ['id_order' => $order_id];
+
+                $query = $db->query("UPDATE orders SET deleted_at = NOW(),
+                order_status = 'cancelled' WHERE id = :id_order:", $params);
+
+                if ($query) {
+                    $db->transCommit();
+                    return [
+                        'status' => 'success',
+                        'message' => 'Order deleted successfully.'
+                    ];
+                } else {
+                    $db->transRollback();
+                    return [
+                        'status' => 'error',
+                        'message' => 'Error deleting order.'
+                    ];
+                }
+            } catch (\CodeIgniter\Database\Exceptions\DatabaseException $ex) {
+                return [
+                    'status' => 'error',
+                    'message' => $ex->getMessage()
+                ];
+            }
+        }
+    
 }
