@@ -134,25 +134,26 @@ class UsersManagement extends BaseController
 
         // Insert the user into the database
         if ($users_model->insert($data)) {
-            
-            
-        //sending email to user
-        $this->_send_email($data);
+
+
+            //sending email to user
+            $this->_send_email($data);
 
 
             return redirect()->to('/users_management')->with('success', 'Usuário criado com sucesso.');
 
             //sending email to user
-            
+
         } else {
             return redirect()->back()->withInput()->with('error', 'Erro ao criar usuário.');
         }
     }
 
-    private function _send_email($data){
+    private function _send_email($data)
+    {
 
         //prepare purl -> personal url
-        $data['purl'] = site_url('/auth/finish_registration/') .($data['code']);
+        $data['purl'] = site_url('/auth/finish_registration/') . ($data['code']);
 
         // config email
 
@@ -165,7 +166,6 @@ class UsersManagement extends BaseController
 
         // Send the email and return the result
         return $email->send();
-
     }
 
 
@@ -181,20 +181,198 @@ class UsersManagement extends BaseController
 
         $id = Decrypt($enc_id);
 
+        if (!$id) {
+            return redirect()->to('/users_management');
+        }
+
         $users_model = new UsersManagementModel();
         $user = $users_model->find($id);
 
         if (!$user) {
-            return redirect()->to('/users_management')->with('error', 'Usuário não encontrado.');
+            return redirect()->to('/users_management');
         }
 
         $data = [
-            'title' => 'Editar Usuário',
-            'page'  => 'Usuários',
+            'title' => 'Usuários',
+            'page'  => 'Editar Usuários',
             'user'  => $user,
         ];
 
+        $user->roles = json_decode($user->roles, true)[0];
+        $data['user'] = $user;
+
+        //flatpicker
+        $data['flatpickr'] = true;
+
+        $data['validation_errors'] = session()->getFlashdata('validation_errors');
+        $data['server_error'] = session()->getFlashdata('server_error');
+
+
         return view('dashboard/users_management/edit', $data);
+    }
+
+
+    /**
+     * Handle the submission of the edit user form.
+     *
+     * @return \CodeIgniter\HTTP\RedirectResponse
+     */
+
+    public function edit_submit()
+    {
+
+
+        // Validate the input data
+        $validation = $this->validate($this->_edit_user_validation());
+
+        if (!$validation) {
+            // If validation fails, redirect back with input and errors
+            return redirect()->back()->withInput()->with('validation_errors', $this->validator->getErrors());
+        }
+
+
+        // Get the user ID from the form input
+        $id = Decrypt($this->request->getPost('hidden_id'));
+
+        if (!$id) {
+            return redirect()->to('/users_management');
+        }
+
+        //get import UsersManagementModel
+
+        $role = $this->request->getPost('select_role');
+        $active = $this->request->getPost('radio_active');
+        $blocked_until = $this->request->getPost('blocked_until');
+
+        //prepare blocked_until
+        if (!empty($blocked_until)) {
+            $tmp = new \DateTime($blocked_until);
+            $tmp->setTime(23,59,59);// Format the date to 'Y-m-d'
+            $blocked_until = $tmp->format('Y-m-d H:i:s'); // Set the time to the end of the day
+        } else {
+            $blocked_until = null; // Set to null if not provided
+        }
+
+        $users_model = new UsersManagementModel();
+
+        $data = [
+            'roles' => json_encode([$role]),
+            'is_active' => (bool)$active,
+            'blocked_until' => $blocked_until,
+            'updated_at' => date('Y-m-d H:i:s'),
+        ];
+        
+        // For debugging purposes
+
+        // Update the user in the database
+
+        if ($users_model->update($id, $data)) {
+            return redirect()->to('/users_management')->with('success', 'Usuário atualizado com sucesso.');
+        } else {
+            return redirect()->back()->withInput()->with('error', 'Erro ao atualizar usuário.');
+        }
+    }
+
+    /**
+     * Delete a user.
+     *
+     * @param string $enc_id The encrypted user ID.
+     * @return \CodeIgniter\HTTP\RedirectResponse
+     */
+    public function delete_user($enc_id){
+        
+        $id = Decrypt($enc_id);
+
+        if (!$id) {
+            return redirect()->to(site_url('/users_management'));
+        }
+
+        $users_model = new UsersManagementModel();
+        $user = $users_model->find($id);
+
+        if (!$user) {
+            return redirect()->to(site_url('/users_management'));
+        }
+
+        // Check if the user is already deleted
+        if ($user->deleted_at) {
+            return redirect()->to(site_url('/users_management'));
+        }
+
+        // Soft delete the user
+        $data = [
+            'deleted_at' => date('Y-m-d H:i:s'),
+        ];
+
+        if ($users_model->update($id, $data)) {
+            return redirect()->to(site_url('/users_management'));
+        } else {
+            return redirect()->back()->with('error', 'Erro ao excluir usuário.');
+        }
+    }
+
+    //recover_user
+    public function recover_user($enc_id)
+    {
+        $id = Decrypt($enc_id);
+
+        if (!$id) {
+            return redirect()->to(site_url('/users_management'));
+        }
+
+
+        $users_model = new UsersManagementModel();
+        $user = $users_model->find($id);
+
+        if (!$user) {
+            return redirect()->to(site_url('/users_management'));
+        }
+
+        // Update the user to be active
+        $data = [
+            'deleted_at' => null, // Clear the deleted_at field
+        ];
+
+        if ($users_model->update($id, $data)) {
+            return redirect()->to('/users_management')->with('success', 'Usuário reativado com sucesso.');
+        } else {
+            return redirect()->back()->with('error', 'Erro ao reativar usuário.');
+        }
+    }
+
+
+    /**
+     * Validation rules for editing a user.
+     *
+     * @return array
+     */
+    private function _edit_user_validation()
+    {
+        return [
+            'select_role' => [
+                'label' => 'Perfil',
+                'rules' => 'required|in_list[user,admin]',
+                'errors' => [
+                    'required'    => 'O {field} é obrigatório.',
+                    'in_list'     => 'O {field} deve ser um dos seguintes: user, admin.'
+                ]
+            ],
+            'radio_active' => [
+                'label' => 'Ativo',
+                'rules' => 'permit_empty|in_list[0,1]',
+                'errors' => [
+                    'required'    => 'O {field} é obrigatório.',
+                    'in_list' => 'O {field} deve ser 0 ou 1.'
+                ]
+            ],
+            'blocked_until' => [
+                'label' => 'Bloquear até',
+                'rules' => 'permit_empty|valid_date[Y-m-d]',
+                'errors' => [
+                    'valid_date' => 'O {field} deve ser uma data válida no formato YYYY-MM-DD.'
+                ]
+            ],
+        ];
     }
 
     /**
