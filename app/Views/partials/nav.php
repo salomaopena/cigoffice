@@ -12,5 +12,6 @@
     <hr>
     <li class="list-group-item"><a href="<?= site_url('/users_management')?>"><i class="fa-solid fa-user-gear me-3"></i>Gestão de Usuários</a></li>
     <hr>
+    <li class="list-group-item"><a href="<?= site_url('/auth/profile') ?>"><i class="fa-solid fa-user-gear me-3"></i>Perfil do usuário</a></li>
     <li class="list-group-item"><a href="<?= site_url('/auth/logout') ?>"><i class="fa-solid fa-right-from-bracket me-3"></i>Sair</a></li>
 </ul>

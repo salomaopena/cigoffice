@@ -168,7 +168,8 @@ class Auth extends BaseController
         return view('auth/define_password', $data);
     }
 
-    public function define_password_submit(){
+    public function define_password_submit()
+    {
         //Check if the user is already logged in
         if (!session()->has('new_user')) {
             return redirect()->to('/auth/login');
@@ -200,19 +201,54 @@ class Auth extends BaseController
         //Remove the new user data from session
         session()->remove('new_user');
 
-        return redirect()->to('/auth/welcome')->with('success',true);
+        return redirect()->to('/auth/welcome')->with('success', true);
     }
 
 
     public function welcome()
     {
-        if(!session()->getFlashdata('success')){
+        if (!session()->getFlashdata('success')) {
             return redirect()->to('/auth/login');
         }
 
         //Load the welcome view
         return view('auth/welcome');
     }
+
+    // Profile page
+    public function profile()
+    {
+
+        //Check if the user is logged in
+        if (!session()->has('user')) {
+            return redirect()->to('/auth/login');
+        }
+
+        //Load the user model
+        $user_model = new UserModel();
+        //Get the user data from session
+        $user = $user_model->find(session()->user['id']);
+        $user->roles = json_decode($user->roles, true)[0];
+
+        //Check if the user exists
+        if (!$user) {
+            return redirect()->to('/auth/login');
+        }
+
+
+        //Load the validation errors and server error messages
+        $data = [
+            'title' => 'Perfil',
+            'page' => 'Perfil',
+            'user' => $user,
+            'validation_errors' => session()->getFlashdata('validation_errors'),
+            'server_error' => session()->getFlashdata('server_error'),
+            
+        ];
+
+        return view('auth/profile', $data);
+    }
+
 
     private function _define_new_password_validation_rules()
     {

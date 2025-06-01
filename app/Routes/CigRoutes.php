@@ -11,7 +11,7 @@ $routes = Services::routes();
 
 
 // main routes
-$routes->get('/','Main::index');
+$routes->get('/', 'Main::index');
 
 //login routes
 
@@ -26,15 +26,19 @@ $routes->get('/auth/define_password', 'Auth::define_password');
 $routes->post('/auth/define_password_submit', 'Auth::define_password_submit');
 $routes->get('/auth/welcome', 'Auth::welcome');
 
+
+//profile routes
+$routes->get('/auth/profile', 'Auth::profile');
+
 //dashboard routes
 //products routes
 $routes->get('/products', 'Products::index');
 $routes->get('/products/new', 'Products::newProduct');
-$routes->post('/products/new/submit','Products::newSubmit');
+$routes->post('/products/new/submit', 'Products::newSubmit');
 
 //edit product
 $routes->get('/products/edit/(:alphanum)', 'Products::edit/$1');
-$routes->post('/products/edit/submit','Products::editSubmit');
+$routes->post('/products/edit/submit', 'Products::editSubmit');
 
 //delete product
 $routes->get('/products/delete/(:alphanum)', 'Products::delete/$1');
@@ -56,3 +60,6 @@ $routes->get('/users_management/new', 'UsersManagement::new');
 $routes->post('/users_management/submit', 'UsersManagement::submit');
 $routes->get('/users_management', 'UsersManagement::index');
 $routes->get('/users_management/edit/(:alphanum)', 'UsersManagement::edit/$1');
+$routes->post('/users_management/edit_submit', 'UsersManagement::edit_submit');
+$routes->get('/users_management/delete_user/(:alphanum)', 'UsersManagement::delete_user/$1');
+$routes->get('/users_management/recover_user/(:alphanum)', 'UsersManagement::recover_user/$1');
