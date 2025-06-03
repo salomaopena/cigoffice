@@ -46,7 +46,7 @@
     <?php endif ?>
 
     <div class="text-center mt-1 login-link">
-        <p class="text-muted">Esqueceu a senha? <a href="#">Recuperar</a></p>
+        <p class="text-muted">Esqueceu a senha? <a href="<?= site_url('/auth/forgot_password') ?>">Recuperar</a></p>
     </div> <!-- fim-->
     <!-- criar conta-->
     <div class="text-center mt-1 login-link">
@@ -67,7 +67,7 @@
     let loginData = [
         {
             email: 'admin1@email.com',
-            password: 'admin1',
+            password: 'Aa123456',
             restaurant: 1,
         },
         {

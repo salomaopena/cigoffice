@@ -251,3 +251,16 @@ body{
   .overflow-hidden{
     overflow: hidden;
   }
+
+  /*Home link*/
+  .home-link{
+    color: var(--menu-bg-color);
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease-in-out;
+  }
+
+  .home-link:hover{
+    color: var(--top-bar-bg-color);
+    text-decoration: underline  ;
+  }

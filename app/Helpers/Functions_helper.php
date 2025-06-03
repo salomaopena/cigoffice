@@ -45,6 +45,29 @@ function stock_movements_selecte_filter($filter, $option)
     }
 }
 
+function menu_is_available($roles)
+{
+    $roles = explode(',', $roles);
+    // Check if the user has any of the roles that allow access to the menu
+    // $roles = [
+    //     'admin' => 'Admin',
+    //     'manager' => 'Manager',
+    //     'cashier' => 'Cashier',
+    //     'user'  => 'User',
+    //     'waiter' => 'Waiter',
+    //     'kitchen' => 'Kitchen',
+    //     'delivery' => 'Delivery',
+    // ];
+
+    $user_roles = json_decode(session()->user['roles'] );
+    foreach ($user_roles as $role) {
+        if (in_array($role, $roles)) {
+            return true; // User has at least one of the required roles
+        }
+    }
+    return false; // User does not have any of the required roles
+}
+
 function print_data($data, $die = true)
 {
     echo ('<pre>');
@@ -57,3 +80,4 @@ function print_data($data, $die = true)
         die(1);
     }
 }
+
