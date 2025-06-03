@@ -23,29 +23,33 @@
                         <h5><i class="fa-solid fa-user-pen me-3"></i><strong>Identidade</strong></h5>
                         <hr class="my-2">
 
-                        <?= form_open('/auth/profile_submit') ?>
+                        <?= form_open('/auth/profile_submit', ['novalidate' => true]) ?>
 
 
                         <div class=" mb-3">
                             <label for="text_first_name" class="form-label">Nome</label>
-                            <input type="text" class="form-control" id="text_first_name" name="text_first_name" value="<?= set_value('text_first_name', $user->first_name) ?>" required>
+                            <input type="text" class="form-control" id="text_first_name" name="text_first_name" value="<?= old('text_first_name', $user->first_name) ?>" required>
+                            <?= display_error('text_first_name', $validation_errors) ?>
                         </div>
 
                         <div class="mb-3">
                             <label for="text_last_name" class="form-label">Sobrenome </label>
-                            <input type="text" class="form-control" id="text_last_name" name="text_last_name" value="<?= set_value('text_last_name', $user->last_name) ?>" required>
+                            <input type="text" class="form-control" id="text_last_name" name="text_last_name" value="<?= old('text_last_name', $user->last_name) ?>" required>
+                            <?= display_error('text_last_name', $validation_errors) ?>
                         </div>
 
 
 
                         <div class="mb-3">
                             <label for="text_email" class="form-label">E-mail</label>
-                            <input type="email" class="form-control" id="text_email" name="text_email" value="<?= set_value('text_email', $user->email) ?>" required>
+                            <input type="email" class="form-control" id="text_email" name="text_email" value="<?= old('text_email', $user->email) ?>" required>
+                            <?= display_error('text_email', $validation_errors) ?>
                         </div>
 
                         <div class="mb-3">
                             <label for="text_phone" class="form-label">Telefone </label>
-                            <input type="text" class="form-control" id="text_phone" name="text_phone" value="<?= set_value('text_phone', $user->phone) ?>" required>
+                            <input type="text" class="form-control" id="text_phone" name="text_phone" value="<?= old('text_phone', $user->phone) ?>" required>
+                            <?= display_error('text_phone', $validation_errors) ?>
                         </div>
 
                         <button type="submit" class="btn btn-outline-success px-3">
@@ -53,6 +57,21 @@
                             Salvar</button>
 
                         <?= form_close() ?>
+
+                        <?php if (!empty($profile_success)): ?>
+                            <div class="alert alert-success mt-3" role="alert">
+                                <i class="fa-solid fa-check me-2"></i>
+                                <?= $profile_success ?>
+                            </div>
+                        <?php endif; ?>
+
+                        <?php if (!empty($server_error)): ?>
+                            <div class="alert alert-danger mt-3" role="alert">
+                                <i class="fa-solid fa-check me-2"></i>
+                                <?= $server_error ?>
+                            </div>
+                        <?php endif; ?>
+
                     </div>
                 </div>
 
@@ -61,24 +80,27 @@
                         <h5><i class="fa-solid fa-key me-3"></i><strong>Alterar senha</strong></h5>
                         <hr class="my-2">
 
-                        <?= form_open('/auth/change_password_submit') ?>
+                        <?= form_open('/auth/change_password_submit', ['novalidate' => true]) ?>
 
 
                         <div class=" mb-3">
                             <label for="text_password" class="form-label">Senha Atual</label>
                             <input type="password" class="form-control" id="text_password" name="text_password" value="<?= old('text_password') ?>" required>
+                            <?= display_error('text_password', $validation_errors) ?>
                         </div>
 
                         <div class="mb-3">
                             <label for="text_new_password" class="form-label">Nova senha </label>
                             <input type="password" class="form-control" id="text_new_password" name="text_new_password" value="<?= old('text_new_password') ?>" required>
+                            <?= display_error('text_new_password', $validation_errors) ?>
                         </div>
 
 
 
                         <div class="mb-3">
                             <label for="text_new_password_confirm" class="form-label">Confirmar nova senha</label>
-                            <input type="email" class="form-control" id="text_new_password_confirm" name="text_new_password_confirm" value="<?= old('text_new_password_confirm') ?>" required>
+                            <input type="password" class="form-control" id="text_new_password_confirm" name="text_new_password_confirm" value="<?= old('text_new_password_confirm') ?>" required>
+                            <?= display_error('text_new_password_confirm', $validation_errors) ?>
                         </div>
 
                         <button type="submit" class="btn btn-outline-success px-3">
@@ -86,6 +108,15 @@
                             Alterar</button>
 
                         <?= form_close() ?>
+
+                        <?php if (!empty($profile_change_password_success)): ?>
+                            <div class="alert alert-success mt-3" role="alert">
+                                <i class="fa-solid fa-check me-2"></i>
+                                <?= $profile_change_password_success ?>
+                            </div>
+                        <?php endif; ?>
+
+
                     </div>
                 </div>
             </div>

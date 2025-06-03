@@ -14,6 +14,7 @@ use CodeIgniter\Filters\PerformanceMetrics;
 use CodeIgniter\Filters\SecureHeaders;
 use App\Filters\UserIsLogIn;
 use App\Filters\ApiAuth;
+use App\Filters\AdminRoleFilter;
 
 class Filters extends BaseFilters
 {
@@ -38,6 +39,7 @@ class Filters extends BaseFilters
         'performance'   => PerformanceMetrics::class,
         'userislogin'   => UserIsLogIn::class,
         'apiauth'       => ApiAuth::class,
+        'adminrole'     => AdminRoleFilter::class,
     ];
 
     /**
@@ -82,6 +84,12 @@ class Filters extends BaseFilters
                     '/auth/define_password',
                     '/auth/define_password_submit',
                     '/auth/welcome',
+                    '/auth/forgot_password',
+                    '/auth/forgot_password_submit',
+                    '/auth/reset_password/*',
+                    '/auth/reset_password_submit',
+                    '/auth/reset_password_submit_success',
+
                     '/api/*',
                     '/credencials/*',
                 ]

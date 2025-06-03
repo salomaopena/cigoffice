@@ -9,6 +9,10 @@ use Config\Services;
 //set the routes collections
 $routes = Services::routes();
 
+// Load the system's routing file first, so that the app and ENVIRONMENT
+// can override it later. This file is typically located at
+
+$routes->get('/no_access_allowed', 'Main::noAccessAllowed');
 
 // main routes
 $routes->get('/', 'Main::index');
@@ -18,6 +22,12 @@ $routes->get('/', 'Main::index');
 $routes->get('/auth/login', 'Auth::login');
 $routes->post('/auth/login-submit', 'Auth::login_submit');
 $routes->get('/auth/logout', 'Auth::logout');
+//forgot password
+$routes->get('/auth/forgot_password', 'Auth::forgot_password');
+$routes->post('/auth/forgot_password_submit', 'Auth::forgot_password_submit');
+//reset password
+$routes->get('/auth/reset_password/(:alphanum)', 'Auth::reset_password/$1');
+$routes->post('/auth/reset_password_submit', 'Auth::reset_password_submit');
 
 //finish registration
 $routes->get('/auth/finish_registration/(:alphanum)', 'Auth::finish_registration/$1');
@@ -29,6 +39,8 @@ $routes->get('/auth/welcome', 'Auth::welcome');
 
 //profile routes
 $routes->get('/auth/profile', 'Auth::profile');
+$routes->post('/auth/profile_submit', 'Auth::profile_submit');
+$routes->post('/auth/change_password_submit', 'Auth::change_password_submit');
 
 //dashboard routes
 //products routes
@@ -56,10 +68,10 @@ $routes->get('/stocks/export_csv/(:alphanum)', 'Stocks::exportCSV/$1');
 
 
 //users management
-$routes->get('/users_management/new', 'UsersManagement::new');
-$routes->post('/users_management/submit', 'UsersManagement::submit');
-$routes->get('/users_management', 'UsersManagement::index');
-$routes->get('/users_management/edit/(:alphanum)', 'UsersManagement::edit/$1');
-$routes->post('/users_management/edit_submit', 'UsersManagement::edit_submit');
-$routes->get('/users_management/delete_user/(:alphanum)', 'UsersManagement::delete_user/$1');
-$routes->get('/users_management/recover_user/(:alphanum)', 'UsersManagement::recover_user/$1');
+$routes->get('/users_management/new', 'UsersManagement::new', ['filter' => 'adminrole']);
+$routes->post('/users_management/submit', 'UsersManagement::submit', ['filter' => 'adminrole']);
+$routes->get('/users_management', 'UsersManagement::index', ['filter' => 'adminrole']);
+$routes->get('/users_management/edit/(:alphanum)', 'UsersManagement::edit/$1', ['filter' => 'adminrole']);
+$routes->post('/users_management/edit_submit', 'UsersManagement::edit_submit', ['filter' => 'adminrole']);
+$routes->get('/users_management/delete_user/(:alphanum)', 'UsersManagement::delete_user/$1', ['filter' => 'adminrole']);
+$routes->get('/users_management/recover_user/(:alphanum)', 'UsersManagement::recover_user/$1', ['filter' => 'adminrole']);
